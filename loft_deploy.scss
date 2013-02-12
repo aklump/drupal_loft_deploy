@@ -1,1 +1,72 @@
+/* Color: staging*/
+$staging: #00ff00;
+$text_on_staging: invert($staging);
 
+/* Color: dev*/
+$dev: #ffff00;
+$text_on_dev: invert($dev);
+
+div.loft-deploy {
+  left: 0px;
+  position: fixed;
+  right: 0px;
+  top: 0px;
+  z-index: 200;
+  div.border {
+    background-color: $dev;
+    position: fixed;
+  }
+  a {
+    background-color: $dev;
+    color: $text_on_dev;
+    font-size: 12px;
+    font-weight: 600;
+    height: 28px;
+    left: 50%;
+    line-height: 26px;
+    margin-left: -66px;
+    position: fixed;
+    text-align: center;
+    text-transform: uppercase;
+    bottom: 0px;
+    width: 110px;
+    z-index: 231;
+  }
+  div.border.n {
+    height: 8px;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+  }
+  div.border.e {
+    bottom: 0px;
+    right: 0px;
+    top: 0px;
+    width: 8px;
+  }
+  div.border.s {
+    bottom: 0px;
+    height: 8px;
+    left: 0px;
+    right: 0px;
+  }
+  div.border.w {
+    bottom: 0px;
+    left: 0px;
+    top: 0px;
+    width: 8px;
+  }
+  a:hover {
+    text-decoration: none;
+  }
+}
+div.loft-deploy.staging {
+  div.border {
+    background-color: $staging;
+    position: fixed;
+  }
+  a {
+    background-color: $staging;
+    color: $text_on_staging;
+  }
+}
