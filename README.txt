@@ -36,8 +36,10 @@ CONFIGURATION:
     @code
     $conf['loft_deploy_css_class'] = 'gitflow-develop';
     @endcode
+* We've provided a fourth color if you add the class 'gitflow-master' in the
+  included css.
 @endcode
-* Simply enable the module and site back.
+* Now enjoy the module.
 
 
 --------------------------------------------------------
