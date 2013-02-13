@@ -11,12 +11,31 @@ INSTALLATION:
 
 
 CONFIGURATION:
+* This is not just a "dev module" as such, you should enable this module on
+  production; though you won't see any visual changes to production it will
+  insure that when you dump your prod database and import it to dev or staging,
+  that the module is enabled and can begin to make the visual distinctions on
+  the dev and staging sites. This module has no measurable affect on a
+  production website as it's been highly optimized for speed.
 * If using settings.local.php format, the $site_role variable will inform this
   module of the role of the site.
-* If not you should add the following to settings.php
-@code
-// One of 'prod', 'staging', or 'dev'
-$conf['loft_deploy_site_role'] = 'staging';
+* If not you should add the following to settings.php; take not that adding the
+  $conf variable as shown here will override what you have in
+  settings.local.php, if in fact you have anything there.
+    @code
+    // One of 'prod', 'staging', or 'dev'
+    $conf['loft_deploy_site_role'] = 'staging';
+    @endcode
+* You may alter the title that is displayed at the bottom of the screen by
+  adding the following to settings.local.php or settings.php, where the token
+  '!site_role' will print the site role.
+    @code
+    $conf['loft_deploy_site_title'] = '!site_role'
+    @endcode
+* You may influence the css by adding, as an example
+    @code
+    $conf['loft_deploy_css_class'] = 'gitflow-develop';
+    @endcode
 @endcode
 * Simply enable the module and site back.
 

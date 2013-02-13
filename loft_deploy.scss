@@ -1,10 +1,15 @@
 /* Color: staging*/
 $staging: #00ff00;
-$text_on_staging: invert($staging);
+$text_on_staging: #000;
 
 /* Color: dev*/
-$dev: #ffff00;
-$text_on_dev: invert($dev);
+$dev: #00ffff;
+$text_on_dev: #000;
+
+/* Color: gitflow_master*/
+$gitflow_master: #ff00ff;
+$text_on_gitflow_master: #fff;
+
 
 div.loft-deploy {
   left: 0px;
@@ -21,7 +26,6 @@ div.loft-deploy {
     color: $text_on_dev;
     font-size: 12px;
     font-weight: 600;
-    height: 28px;
     left: 50%;
     line-height: 26px;
     margin-left: -66px;
@@ -29,8 +33,15 @@ div.loft-deploy {
     text-align: center;
     text-transform: uppercase;
     bottom: 0px;
-    width: 110px;
+    width: auto;
     z-index: 231;
+    padding: 2px 15px 0;
+    border-top-right-radius: 15px;
+    -webkit-border-top-right-radius: 15px;
+    -moz-border-radius-topright: 15px;
+    border-top-left-radius: 15px;
+    -webkit-border-top-left-radius: 15px;
+    -moz-border-radius-topleft: 15px;
   }
   div.border.n {
     height: 8px;
@@ -68,5 +79,27 @@ div.loft-deploy.staging {
   a {
     background-color: $staging;
     color: $text_on_staging;
+  }
+}
+
+div.loft-deploy.gitflow-develop {
+  div.border {
+    background-color: $dev;
+    position: fixed;
+  }
+  a {
+    background-color: $dev;
+    color: $text_on_staging;
+  }
+}
+
+div.loft-deploy.gitflow-master {
+  div.border {
+    background-color: $gitflow_master;
+    position: fixed;
+  }
+  a {
+    background-color: $gitflow_master;
+    color: $text_on_gitflow_master;
   }
 }

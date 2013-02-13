@@ -38,19 +38,20 @@ function loft_deploy_init() {
  * Get the site role as defined in settings.local.php
  */
 function loft_deploy_site_role() {
-  static $site_role = NULL;
+  $site_role = &drupal_static(__FUNCTION__, NULL);
   if ($site_role === NULL) {
-    if (!($site_role = variable_get('loft_deploy_site_role', NULL))) {
+    if (!empty($_SESSION['loft_deploy']['site_role'])) {
+      $site_role = $_SESSION['loft_deploy']['site_role'];
+    }
+    elseif (!($site_role = variable_get('loft_deploy_site_role', NULL))) {
       if (file_exists(DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php')
         && ($file = file_get_contents(DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php'))
         && preg_match('/\$site_role *\= *[\'"]{1}([^\'"]*)[\'"]{1}/', $file, $found)
-        && ($site_role = $found[1])) {
-      return $site_role;
-      }
-      else {
+        && !($site_role = $found[1])) {
         // The default role is prod
         $site_role = LOFT_DEPLOY_SITE_ROLE_PROD;
       }
+      $_SESSION['loft_deploy']['site_role'] = $site_role;
     }
   }
   return $site_role;
@@ -62,10 +63,12 @@ function loft_deploy_site_role() {
 function loft_deploy_preprocess_html(&$vars) {
   if (($site_role = loft_deploy_site_role()) !== LOFT_DEPLOY_SITE_ROLE_PROD) {
     $output = '';
+    $title = str_replace('!site_role', $site_role, variable_get('loft_deploy_site_title', '!site_role'));
+    $class = variable_get('loft_deploy_css_class', '');
     $output .= <<<EOD
-<div class="loft-deploy {$site_role}">
+<div class="loft-deploy {$site_role} {$class}">
   <a class="hide" href="#">
-  {$site_role}
+  {$title}
   </a>
   <!-- Borders. -->
   <div class="border n"></div>
@@ -79,4 +82,11 @@ EOD;
       '#markup' => $output,
     );
   }
+}
+
+/**
+ * Implements hook_flush_caches().
+ */
+function loft_deploy_flush_caches() {
+  unset($_SESSION['loft_deploy']);
 }
