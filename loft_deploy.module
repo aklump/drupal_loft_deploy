@@ -25,16 +25,6 @@ define('LOFT_DEPLOY_SITE_ROLE_STAGING', 'staging');
 define('LOFT_DEPLOY_SITE_ROLE_DEV', 'dev');
 
 /**
- * Implements hook_init().
- */
-function loft_deploy_init() {
-  if (loft_deploy_site_role() !== LOFT_DEPLOY_SITE_ROLE_PROD) {
-    drupal_add_css(drupal_get_path('module', 'loft_deploy') . '/loft_deploy.css');
-    drupal_add_js(drupal_get_path('module', 'loft_deploy') . '/loft_deploy.js');
-  }
-}
-
-/**
  * Get the site role as defined in settings.local.php
  */
 function loft_deploy_site_role() {
@@ -58,13 +48,42 @@ function loft_deploy_site_role() {
 }
 
 /**
+ * Get the site role as defined in settings.local.php
+ */
+function loft_deploy_git_branch() {
+  $git_branch = &drupal_static(__FUNCTION__, NULL);
+  if ($git_branch === NULL) {
+    if (!empty($_SESSION['loft_deploy']['git_branch'])) {
+      $git_branch = $_SESSION['loft_deploy']['git_branch'];
+    }
+    elseif (exec('git status', $git)
+      && ($git = implode("\n", $git))
+      && preg_match('/# On branch (.*)\s/', $git, $found)
+      && !($git_branch = $found[1])) {
+      $git_branch = NULL;
+    }
+    $_SESSION['loft_deploy']['git_branch'] = $git_branch;
+  }
+  return $git_branch;
+}
+
+/**
  * Implements hook_preprocess_html().
  */
 function loft_deploy_preprocess_html(&$vars) {
   if (($site_role = loft_deploy_site_role()) !== LOFT_DEPLOY_SITE_ROLE_PROD) {
+    drupal_add_css(drupal_get_path('module', 'loft_deploy') . '/loft_deploy.css');
+    drupal_add_js(drupal_get_path('module', 'loft_deploy') . '/loft_deploy.js');
+
     $output = '';
-    $title = str_replace('!site_role', $site_role, variable_get('loft_deploy_site_title', '!site_role'));
     $class = variable_get('loft_deploy_css_class', '');
+    // Chose not to use tokens or t() for the theoretically fastest str replace
+    $title = '!site_role ~ !git_branch';
+    $title = str_replace('!site_role', $site_role, variable_get('loft_deploy_site_title', $title));
+    if ($git_branch = loft_deploy_git_branch()) {
+      $class .= ' git-' . $git_branch;
+    }
+    $title = str_replace('!git_branch', $git_branch, $title);
     $output .= <<<EOD
 <div class="loft-deploy {$site_role} {$class}">
   <a class="hide" href="#">

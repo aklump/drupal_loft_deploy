@@ -1,6 +1,6 @@
 /* Color: staging*/
 /* Color: dev*/
-/* Color: gitflow_master*/
+/* Color: git_master*/
 div.loft-deploy {
   left: 0px;
   position: fixed;
@@ -13,21 +13,16 @@ div.loft-deploy {
   div.loft-deploy a {
     background-color: aqua;
     color: black;
-    font-size: 12px;
-    font-weight: 600;
-    left: 50%;
-    line-height: 26px;
-    margin-left: -66px;
     position: fixed;
-    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    right: 0;
+    text-align: right;
     text-transform: uppercase;
-    bottom: 0px;
+    bottom: 0;
     width: auto;
     z-index: 231;
-    padding: 2px 15px 0;
-    border-top-right-radius: 15px;
-    -webkit-border-top-right-radius: 15px;
-    -moz-border-radius-topright: 15px;
+    padding: 3px 10px 3px;
     border-top-left-radius: 15px;
     -webkit-border-top-left-radius: 15px;
     -moz-border-radius-topleft: 15px; }
@@ -61,16 +56,16 @@ div.loft-deploy.staging a {
   background-color: lime;
   color: black; }
 
-div.loft-deploy.gitflow-develop div.border {
+div.loft-deploy.git-develop div.border {
   background-color: aqua;
   position: fixed; }
-div.loft-deploy.gitflow-develop a {
+div.loft-deploy.git-develop a {
   background-color: aqua;
   color: black; }
 
-div.loft-deploy.gitflow-master div.border {
+div.loft-deploy.git-master div.border {
   background-color: fuchsia;
   position: fixed; }
-div.loft-deploy.gitflow-master a {
+div.loft-deploy.git-master a {
   background-color: fuchsia;
   color: white; }
