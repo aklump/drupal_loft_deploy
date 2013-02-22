@@ -2,14 +2,17 @@
 $staging: #00ff00;
 $text_on_staging: #000;
 
-/* Color: dev*/
-$dev: #00ffff;
-$text_on_dev: #000;
+/* Color: dev.gitflow-master*/
+$dev_master: #ff00ff;
+$text_on_dev_master: #fff;
 
-/* Color: git_master*/
-$git_master: #ff00ff;
-$text_on_git_master: #fff;
+/* Color: dev.gitflow-develop*/
+$dev_develop: #00ffff;
+$text_on_dev_develop: #000;
 
+/**
+ * Positioning
+ */
 div.loft-deploy {
   left: 0px;
   position: fixed;
@@ -17,12 +20,9 @@ div.loft-deploy {
   top: 0px;
   z-index: 200;
   div.border {
-    background-color: $dev;
     position: fixed;
   }
   a {
-    background-color: $dev;
-    color: $text_on_dev;
     position: fixed;
     font-size: 12px;
     font-weight: bold;
@@ -65,37 +65,37 @@ div.loft-deploy {
     text-decoration: none;
   }
 }
+
+/**
+ * Borders & Colors
+ */
+div.loft-deploy.prod {
+  display: none;
+}
 div.loft-deploy.staging {
   div.border {
     background-color: $staging;
-    position: fixed;
   }
   a {
     background-color: $staging;
     color: $text_on_staging;
   }
 }
-
-div.loft-deploy.git-develop,
-div.loft-deploy.gitflow-develop {
+div.loft-deploy.dev.gitflow-master {
   div.border {
-    background-color: $dev;
-    position: fixed;
+    background-color: $dev_master;
   }
   a {
-    background-color: $dev;
-    color: $text_on_staging;
+    background-color: $dev_master;
+    color: $text_on_dev_master;
   }
 }
-
-div.loft-deploy.git-master,
-div.loft-deploy.gitflow-master {
+div.loft-deploy.dev.gitflow-develop {
   div.border {
-    background-color: $git_master;
-    position: fixed;
+    background-color: $dev_develop;
   }
   a {
-    background-color: $git_master;
-    color: $text_on_git_master;
+    background-color: $dev_develop;
+    color: $text_on_dev_develop;
   }
 }

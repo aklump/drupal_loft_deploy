@@ -53,16 +53,12 @@ function loft_deploy_site_role() {
 function loft_deploy_git_branch() {
   $git_branch = &drupal_static(__FUNCTION__, NULL);
   if ($git_branch === NULL) {
-    if (!empty($_SESSION['loft_deploy']['git_branch'])) {
-      $git_branch = $_SESSION['loft_deploy']['git_branch'];
-    }
-    elseif (exec('git status', $git)
+    if (exec('git status', $git)
       && ($git = implode("\n", $git))
       && preg_match('/# On branch (.*)\s/', $git, $found)
       && !($git_branch = $found[1])) {
       $git_branch = NULL;
     }
-    $_SESSION['loft_deploy']['git_branch'] = $git_branch;
   }
   return $git_branch;
 }
@@ -78,25 +74,28 @@ function loft_deploy_preprocess_html(&$vars) {
     $output = '';
     $class = array(variable_get('loft_deploy_css_class', ''));
     // Chose not to use tokens or t() for the theoretically fastest str replace
-    $title = '!site_role ~ !git_branch';
+    $title = 'Role: !site_role ~ Branch: !git_branch';
     $title = str_replace('!site_role', $site_role, variable_get('loft_deploy_site_title', $title));
 
     if ($git_branch = loft_deploy_git_branch()) {
       $git_branch = strtolower($git_branch);
+      $title = str_replace('!git_branch', $git_branch, $title);
       $class[] = 'git-' . $git_branch;
       // Gitflow support
       if (strpos($git_branch, 'master') === 0
           || strpos($git_branch, 'hotfix') === 0) {
         $class[] = 'gitflow-master';
+        $title = str_replace('!gitflow', 'master', $title);
       }
       if (strpos($git_branch, 'develop') === 0
           || strpos($git_branch, 'feature') === 0
           || strpos($git_branch, 'release') === 0) {
         $class[] = 'gitflow-develop';
+        $title = str_replace('!gitflow', 'develop', $title);
       }
     }
 
-    $title = str_replace('!git_branch', $git_branch, $title);
+
     $class = implode(' ', $class);
     $output .= <<<EOD
 <div class="loft-deploy {$site_role} {$class}">

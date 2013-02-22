@@ -1,9 +1,12 @@
 SUMMARY: This module helps visually distinguish dev, staging and production
-websites by applying a colored border around both dev and staging websites.
+website roles by applying a colored border around non-production sites.
+Additional visual feedback is provided including: the current git branch, and
+gitflow parent, when applicable.
 
 
 REQUIREMENTS:
 * Expecting to find settings.local.php
+
 
 INSTALLATION:
 * Download and unzip this module into your modules directory.
@@ -17,36 +20,53 @@ CONFIGURATION:
   that the module is enabled and can begin to make the visual distinctions on
   the dev and staging sites. This module has no measurable affect on a
   production website as it's been highly optimized for speed.
+
+SITE ROLE / BORDER COLOR:
+* Each instance of your website is one of: production, staging or dev. The color
+  of the border around the non-production sites informs you as to it's role.
+  There's one more distinction between a site role dev with master branch, and a
+  site role dev with a develop branch; this adds a fourth color.
+* Obviously, production instances will not have a border.
 * If using settings.local.php format, the $site_role variable will inform this
   module of the role of the site.
-* If not you should add the following to settings.php; take not that adding the
+* If not you should add the following to settings.php; take note that adding the
   $conf variable as shown here will override what you have in
   settings.local.php, if in fact you have anything there.
+
     @code
     // One of 'prod', 'staging', or 'dev'
     $conf['loft_deploy_site_role'] = 'staging';
     @endcode
+
+* These are the default colors:
+  SITE ROLE - GIT BRANCH - COLOR
+  prod        n/a         n/a
+  staging     n/a         green
+  dev         master      pink
+  dev         develop     aqua
+
+INFO TITLE:
+* At the bottom of the page, you will see a readout of information, the "title".
+  By default this will display the site role, and the gitflow parent and current
+  git branch, if you are using git.
 * You may alter the title that is displayed at the bottom of the screen by
   adding the following to settings.local.php or settings.php, where the token
-  '!site_role' will print the site role.
+  '!site_role' will print the site role.  Other tokens are: !git and !gitflow.
     @code
-    $conf['loft_deploy_site_title'] = '!site_role'
+    $conf['loft_deploy_site_title'] = '!site_role - !git > !gitflow'
     @endcode
-* You may influence the css by adding, as an example
+
+ADVANCED THEMING:
+* Refer to div.loft-deploy and it's classes for css overriding.
+* You may influence the css classes on div.loft-deploy by adding, as an example
     @code
-    $conf['loft_deploy_css_class'] = 'gitflow-develop';
+    $conf['loft_deploy_css_class'] = 'my-cool-class';
     @endcode
-* We've provided a fourth color if you add the class 'gitflow-master' in the
-  included css.
-* We've provided classes that support gitflow methodology: gitflow-master for
-  all branches that begin master or hotfix; gitflow-develop for all classes that
-  begin: develop, feature, and release
 @endcode
-* Now enjoy the module.
 
 
 GOTCHAS:
-* If your git branch changes, you need to dump the drupal cache to see the changes
+* If your site role changes, you may need to empty all caches to see the changes
   appear.
 
 --------------------------------------------------------
