@@ -76,14 +76,28 @@ function loft_deploy_preprocess_html(&$vars) {
     drupal_add_js(drupal_get_path('module', 'loft_deploy') . '/loft_deploy.js');
 
     $output = '';
-    $class = variable_get('loft_deploy_css_class', '');
+    $class = array(variable_get('loft_deploy_css_class', ''));
     // Chose not to use tokens or t() for the theoretically fastest str replace
     $title = '!site_role ~ !git_branch';
     $title = str_replace('!site_role', $site_role, variable_get('loft_deploy_site_title', $title));
+
     if ($git_branch = loft_deploy_git_branch()) {
-      $class .= ' git-' . $git_branch;
+      $git_branch = strtolower($git_branch);
+      $class[] = 'git-' . $git_branch;
+      // Gitflow support
+      if (strpos($git_branch, 'master') === 0
+          || strpos($git_branch, 'hotfix') === 0) {
+        $class[] = 'gitflow-master';
+      }
+      if (strpos($git_branch, 'develop') === 0
+          || strpos($git_branch, 'feature') === 0
+          || strpos($git_branch, 'release') === 0) {
+        $class[] = 'gitflow-develop';
+      }
     }
+
     $title = str_replace('!git_branch', $git_branch, $title);
+    $class = implode(' ', $class);
     $output .= <<<EOD
 <div class="loft-deploy {$site_role} {$class}">
   <a class="hide" href="#">

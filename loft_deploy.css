@@ -1,71 +1,103 @@
 /* Color: staging*/
 /* Color: dev*/
 /* Color: git_master*/
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Volumes\/Data\/Users\/aklump\/Repos\/git\/loft_deploy\/loft_deploy\.scss}line{font-family:\0000313}}
 div.loft-deploy {
   left: 0px;
   position: fixed;
   right: 0px;
   top: 0px;
-  z-index: 200; }
-  div.loft-deploy div.border {
-    background-color: aqua;
-    position: fixed; }
-  div.loft-deploy a {
-    background-color: aqua;
-    color: black;
-    position: fixed;
-    font-size: 12px;
-    font-weight: bold;
-    right: 0;
-    text-align: right;
-    text-transform: uppercase;
-    bottom: 0;
-    width: auto;
-    z-index: 231;
-    padding: 3px 10px 3px;
-    border-top-left-radius: 15px;
-    -webkit-border-top-left-radius: 15px;
-    -moz-border-radius-topleft: 15px; }
-  div.loft-deploy div.border.n {
-    height: 8px;
-    left: 0px;
-    right: 0px;
-    top: 0px; }
-  div.loft-deploy div.border.e {
-    bottom: 0px;
-    right: 0px;
-    top: 0px;
-    width: 8px; }
-  div.loft-deploy div.border.s {
-    bottom: 0px;
-    height: 8px;
-    left: 0px;
-    right: 0px; }
-  div.loft-deploy div.border.w {
-    bottom: 0px;
-    left: 0px;
-    top: 0px;
-    width: 8px; }
-  div.loft-deploy a:hover {
-    text-decoration: none; }
+  z-index: 200;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Volumes\/Data\/Users\/aklump\/Repos\/git\/loft_deploy\/loft_deploy\.scss}line{font-family:\0000319}}
+div.loft-deploy div.border {
+  background-color: aqua;
+  position: fixed;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Volumes\/Data\/Users\/aklump\/Repos\/git\/loft_deploy\/loft_deploy\.scss}line{font-family:\0000323}}
+div.loft-deploy a {
+  background-color: aqua;
+  color: black;
+  position: fixed;
+  font-size: 12px;
+  font-weight: bold;
+  right: 0;
+  text-align: right;
+  text-transform: uppercase;
+  bottom: 0;
+  width: auto;
+  z-index: 231;
+  padding: 3px 10px 3px;
+  border-top-left-radius: 15px;
+  -webkit-border-top-left-radius: 15px;
+  -moz-border-radius-topleft: 15px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Volumes\/Data\/Users\/aklump\/Repos\/git\/loft_deploy\/loft_deploy\.scss}line{font-family:\0000340}}
+div.loft-deploy div.border.n {
+  height: 8px;
+  left: 0px;
+  right: 0px;
+  top: 0px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Volumes\/Data\/Users\/aklump\/Repos\/git\/loft_deploy\/loft_deploy\.scss}line{font-family:\0000346}}
+div.loft-deploy div.border.e {
+  bottom: 0px;
+  right: 0px;
+  top: 0px;
+  width: 8px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Volumes\/Data\/Users\/aklump\/Repos\/git\/loft_deploy\/loft_deploy\.scss}line{font-family:\0000352}}
+div.loft-deploy div.border.s {
+  bottom: 0px;
+  height: 8px;
+  left: 0px;
+  right: 0px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Volumes\/Data\/Users\/aklump\/Repos\/git\/loft_deploy\/loft_deploy\.scss}line{font-family:\0000358}}
+div.loft-deploy div.border.w {
+  bottom: 0px;
+  left: 0px;
+  top: 0px;
+  width: 8px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Volumes\/Data\/Users\/aklump\/Repos\/git\/loft_deploy\/loft_deploy\.scss}line{font-family:\0000364}}
+div.loft-deploy a:hover {
+  text-decoration: none;
+}
 
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Volumes\/Data\/Users\/aklump\/Repos\/git\/loft_deploy\/loft_deploy\.scss}line{font-family:\0000369}}
 div.loft-deploy.staging div.border {
   background-color: lime;
-  position: fixed; }
+  position: fixed;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Volumes\/Data\/Users\/aklump\/Repos\/git\/loft_deploy\/loft_deploy\.scss}line{font-family:\0000373}}
 div.loft-deploy.staging a {
   background-color: lime;
-  color: black; }
+  color: black;
+}
 
-div.loft-deploy.git-develop div.border {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Volumes\/Data\/Users\/aklump\/Repos\/git\/loft_deploy\/loft_deploy\.scss}line{font-family:\0000381}}
+div.loft-deploy.git-develop div.border,
+div.loft-deploy.gitflow-develop div.border {
   background-color: aqua;
-  position: fixed; }
-div.loft-deploy.git-develop a {
+  position: fixed;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Volumes\/Data\/Users\/aklump\/Repos\/git\/loft_deploy\/loft_deploy\.scss}line{font-family:\0000385}}
+div.loft-deploy.git-develop a,
+div.loft-deploy.gitflow-develop a {
   background-color: aqua;
-  color: black; }
+  color: black;
+}
 
-div.loft-deploy.git-master div.border {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Volumes\/Data\/Users\/aklump\/Repos\/git\/loft_deploy\/loft_deploy\.scss}line{font-family:\0000393}}
+div.loft-deploy.git-master div.border,
+div.loft-deploy.gitflow-master div.border {
   background-color: fuchsia;
-  position: fixed; }
-div.loft-deploy.git-master a {
+  position: fixed;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Volumes\/Data\/Users\/aklump\/Repos\/git\/loft_deploy\/loft_deploy\.scss}line{font-family:\0000397}}
+div.loft-deploy.git-master a,
+div.loft-deploy.gitflow-master a {
   background-color: fuchsia;
-  color: white; }
+  color: white;
+}

@@ -76,7 +76,8 @@ div.loft-deploy.staging {
   }
 }
 
-div.loft-deploy.git-develop {
+div.loft-deploy.git-develop,
+div.loft-deploy.gitflow-develop {
   div.border {
     background-color: $dev;
     position: fixed;
@@ -87,7 +88,8 @@ div.loft-deploy.git-develop {
   }
 }
 
-div.loft-deploy.git-master {
+div.loft-deploy.git-master,
+div.loft-deploy.gitflow-master {
   div.border {
     background-color: $git_master;
     position: fixed;

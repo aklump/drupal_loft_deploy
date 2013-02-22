@@ -38,9 +38,16 @@ CONFIGURATION:
     @endcode
 * We've provided a fourth color if you add the class 'gitflow-master' in the
   included css.
+* We've provided classes that support gitflow methodology: gitflow-master for
+  all branches that begin master or hotfix; gitflow-develop for all classes that
+  begin: develop, feature, and release
 @endcode
 * Now enjoy the module.
 
+
+GOTCHAS:
+* If your git branch changes, you need to dump the drupal cache to see the changes
+  appear.
 
 --------------------------------------------------------
 CONTACT:
