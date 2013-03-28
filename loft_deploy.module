@@ -32,19 +32,22 @@ define('LOFT_DEPLOY_SITE_ROLE_DEV', 'dev');
 function loft_deploy_site_role($reset = FALSE) {
   static $site_role = NULL;
   if ($reset || $site_role === NULL) {
+    //@todo Find a way to dump when clearing cache
     if (!empty($_SESSION['loft_deploy']['site_role'])) {
       $site_role = $_SESSION['loft_deploy']['site_role'];
     }
-    elseif (!($site_role = variable_get('loft_deploy_site_role', 'prod'))) {
-      if (file_exists(DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php')
-        && ($file = file_get_contents(DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php'))
-        && preg_match('/\$site_role *\= *[\'"]{1}([^\'"]*)[\'"]{1}/', $file, $found)
-        && !($site_role = $found[1])) {
-        // The default role is prod
-        $site_role = LOFT_DEPLOY_SITE_ROLE_PROD;
-      }
-      $_SESSION['loft_deploy']['site_role'] = $site_role;
+    elseif (!($site_role = variable_get('loft_deploy_site_role', NULL))
+      && file_exists(DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php')
+      && ($file = file_get_contents(DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php'))
+      && preg_match('/\$site_role *\= *[\'"]{1}([^\'"]*)[\'"]{1}/', $file, $found)) {
+      $site_role = $found[1];
     }
+
+    // The default needs to be prod, so we don't deface a website unknowningly
+    if (empty($site_role)) {
+      $site_role = LOFT_DEPLOY_SITE_ROLE_PROD;
+    }
+    $_SESSION['loft_deploy']['site_role'] = $site_role;
   }
   return $site_role;
 }
