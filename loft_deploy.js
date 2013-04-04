@@ -55,7 +55,7 @@
       }
       return false;
     });
-  }
+  };
 
   /**
   * @} End of "defgroup loft_deploy".

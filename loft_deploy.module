@@ -27,10 +27,13 @@ define('LOFT_DEPLOY_SITE_ROLE_DEV', 'dev');
 /**
  * Get the site role as defined in settings.local.php
  *
+ * @param bool $reset
+ *  (Optional.) Defaults to FALSE.
+ *
  * @return string
  */
-function loft_deploy_site_role() {
-  $site_role = &drupal_static(__FUNCTION__, NULL);
+function loft_deploy_site_role($reset = FALSE) {
+  static $site_role = NULL;
   if ($site_role === NULL) {
     if (!empty($_SESSION['loft_deploy']['site_role'])) {
       $site_role = $_SESSION['loft_deploy']['site_role'];
@@ -53,9 +56,12 @@ function loft_deploy_site_role() {
 
 /**
  * Get the site role as defined in settings.local.php
+ *
+ * @param bool $reset
+ *  (Optional) Defaults to FALSE.
  */
-function loft_deploy_git_branch() {
-  $git_branch = &drupal_static(__FUNCTION__, NULL);
+function loft_deploy_git_branch($reset = FALSE) {
+  static $git_branch = NULL;
   if ($git_branch === NULL) {
     if (exec('git status', $git)
       && ($git = implode("\n", $git))
@@ -74,7 +80,7 @@ function loft_deploy_preprocess_html(&$vars) {
   if (($site_role = loft_deploy_site_role()) !== LOFT_DEPLOY_SITE_ROLE_PROD
       && empty($_COOKIE['loft_deploy'])) {
     drupal_add_css(drupal_get_path('module', 'loft_deploy') . '/loft_deploy.css');
-    drupal_add_js(drupal_get_path('module', 'loft_deploy') . '/loft_deploy.js');
+    drupal_add_js(drupal_get_path('module', 'loft_deploy') . '/loft_deploy.min.js');
 
     $output = '';
     $class = array(variable_get('loft_deploy_css_class', ''));
