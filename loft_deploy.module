@@ -89,7 +89,7 @@ function loft_deploy_init() {
 /**
  * Implements hook_preprocess_page().
  */
-function loft_deploy_preprocess_page(&$vars) {
+function loft_deploy_footer() {
   global $_loft_deploy_display_;
   $output = '';
   if ($_loft_deploy_display_) {
@@ -133,7 +133,7 @@ function loft_deploy_preprocess_page(&$vars) {
   </div>
 EOD;
   }
-  $vars['closure'] .= $output;
+  return $output;
 }
 
 /**
