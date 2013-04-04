@@ -75,7 +75,7 @@ function loft_deploy_footer() {
   $output = '';
   if (($site_role = loft_deploy_site_role()) !== LOFT_DEPLOY_SITE_ROLE_PROD) {
     drupal_add_css(drupal_get_path('module', 'loft_deploy') . '/loft_deploy.css');
-    drupal_add_js(drupal_get_path('module', 'loft_deploy') . '/loft_deploy.js');
+    drupal_add_js(drupal_get_path('module', 'loft_deploy') . '/loft_deploy.min.js');
 
     $output = '';
     $class = array(variable_get('loft_deploy_css_class', ''));
