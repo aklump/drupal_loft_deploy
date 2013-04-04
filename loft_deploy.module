@@ -39,12 +39,11 @@ function loft_deploy_site_role($reset = FALSE) {
       $site_role = $_SESSION['loft_deploy']['site_role'];
     }
     elseif (!($site_role = variable_get('loft_deploy_site_role', NULL))
-      && file_exists(DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php')
-      && ($file = file_get_contents(DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php'))
+      && file_exists(conf_path() . '/settings.local.php')
+      && ($file = file_get_contents(conf_path() . '/settings.local.php'))
       && preg_match('/\$site_role *\= *[\'"]{1}([^\'"]*)[\'"]{1}/', $file, $found)) {
       $site_role = $found[1];
     }
-
     // The default needs to be prod, so we don't deface a website unknowningly
     if (empty($site_role)) {
       $site_role = LOFT_DEPLOY_SITE_ROLE_PROD;
@@ -74,14 +73,27 @@ function loft_deploy_git_branch($reset = FALSE) {
 }
 
 /**
- * Implements hook_preprocess_html().
+ * Implements hook_init().
  */
-function loft_deploy_preprocess_html(&$vars) {
+function loft_deploy_init() {
+  global $_loft_deploy_display_;
+  $_loft_deploy_display_ = FALSE;
   if (($site_role = loft_deploy_site_role()) !== LOFT_DEPLOY_SITE_ROLE_PROD
       && empty($_COOKIE['loft_deploy'])) {
     drupal_add_css(drupal_get_path('module', 'loft_deploy') . '/loft_deploy.css');
     drupal_add_js(drupal_get_path('module', 'loft_deploy') . '/loft_deploy.min.js');
+    $_loft_deploy_display_ = $site_role;
+  }
+}
 
+/**
+ * Implements hook_preprocess_page().
+ */
+function loft_deploy_preprocess_page(&$vars) {
+  global $_loft_deploy_display_;
+  $output = '';
+  if ($_loft_deploy_display_) {
+    $site_role = $_loft_deploy_display_;
     $output = '';
     $class = array(variable_get('loft_deploy_css_class', ''));
     // Chose not to use tokens or t() for the theoretically fastest str replace
@@ -120,11 +132,8 @@ function loft_deploy_preprocess_html(&$vars) {
   <div class="border w"></div>
   </div>
 EOD;
-
-    $vars['page']['page_bottom']['loft_deploy_border'] = array(
-      '#markup' => $output,
-    );
   }
+  $vars['closure'] .= $output;
 }
 
 /**
