@@ -126,5 +126,7 @@ EOD;
  */
 function loft_deploy_flush_caches() {
   //@todo This does not work in D5; figure out a hook
-  unset($_SESSION['loft_deploy']);
+  if (isset($_SESSION['loft_deploy'])) {
+    unset($_SESSION['loft_deploy']);
+  }
 }
