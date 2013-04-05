@@ -140,5 +140,7 @@ EOD;
  * Implements hook_flush_caches().
  */
 function loft_deploy_flush_caches() {
-  unset($_SESSION['loft_deploy']);
+  if (isset($_SESSION['loft_deploy'])) {
+    unset($_SESSION['loft_deploy']);
+  }
 }
