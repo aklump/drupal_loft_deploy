@@ -81,7 +81,6 @@ div.loft-deploy.staging {
     color: $text_on_staging;
   }
 }
-div.loft-deploy.dev,
 div.loft-deploy.dev.gitflow-master {
   div.border {
     background-color: $dev_master;
@@ -91,6 +90,7 @@ div.loft-deploy.dev.gitflow-master {
     color: $text_on_dev_master;
   }
 }
+div.loft-deploy.dev,
 div.loft-deploy.dev.gitflow-develop {
   div.border {
     background-color: $dev_develop;
