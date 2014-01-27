@@ -70,51 +70,38 @@ function loft_deploy_git_branch() {
 /**
  * Get the title string after replacements
  *
+ * DO NOT CACHE THIS OR IT WON'T RESPOND TO GIT CHANGES!
+ *
  * @return string
  */
 function loft_deploy_get_title() {
-  //D6 static $title = '';
-  //D6 if (empty($title) || $reset) {
   $title = &drupal_static(__FUNCTION__, '');
   if (empty($title)) {
-    if ($cache = cache_get('loft_deploy:title', 'cache')) {
-      $title = empty($cache->data) ? NULL : $cache->data;
-    }
-    else {
-      // Set the default values
-      $title = '';
-      $cache = (object) array('data' => array());
-    }
-    if (empty($title)) {
-      
-      // Set up the title template
-      $title = variable_get('loft_deploy_site_title', 'Role: !site_role ~ Branch: !git_branch');
-      drupal_alter('loft_deploy_title_pre', $title);
+    // Set up the title template
+    $title = variable_get('loft_deploy_site_title', 'Role: !site_role ~ Branch: !git_branch');
+    drupal_alter('loft_deploy_title_pre', $title);
 
-      // Now start replacing tokens
-      $title = str_replace('!site_role', loft_deploy_site_role(), $title);
-      
-      if ($git_branch = loft_deploy_git_branch()) {
-        $git_branch = strtolower($git_branch);
-        $title = str_replace('!git_branch', $git_branch, $title);
-        $class[] = 'git-' . $git_branch;
-        // Gitflow support
-        if (strpos($git_branch, 'master') === 0
-            || strpos($git_branch, 'hotfix') === 0) {
-          $class[] = 'gitflow-master';
-          $title = str_replace('!gitflow', 'master', $title);
-        }
-        if (strpos($git_branch, 'develop') === 0
-            || strpos($git_branch, 'feature') === 0
-            || strpos($git_branch, 'release') === 0) {
-          $class[] = 'gitflow-develop';
-          $title = str_replace('!gitflow', 'develop', $title);
-        }
+    // Now start replacing tokens
+    $title = str_replace('!site_role', loft_deploy_site_role(), $title);
+    
+    if ($git_branch = loft_deploy_git_branch()) {
+      $git_branch = strtolower($git_branch);
+      $title = str_replace('!git_branch', $git_branch, $title);
+      $class[] = 'git-' . $git_branch;
+      // Gitflow support
+      if (strpos($git_branch, 'master') === 0
+          || strpos($git_branch, 'hotfix') === 0) {
+        $class[] = 'gitflow-master';
+        $title = str_replace('!gitflow', 'master', $title);
       }
-      drupal_alter('loft_deploy_title_post', $title);
-
-      cache_set('loft_deploy:title', $title, 'cache', CACHE_PERMANENT);
+      if (strpos($git_branch, 'develop') === 0
+          || strpos($git_branch, 'feature') === 0
+          || strpos($git_branch, 'release') === 0) {
+        $class[] = 'gitflow-develop';
+        $title = str_replace('!gitflow', 'develop', $title);
+      }
     }
+    drupal_alter('loft_deploy_title_post', $title);
   }
 
   return $title;
