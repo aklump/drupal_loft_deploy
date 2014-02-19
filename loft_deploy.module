@@ -48,14 +48,13 @@ function loft_deploy_get_environment() {
       include DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php';
       echo $site_role;
       $site_role = ob_get_contents();
-      ob_flush();
+      ob_end_clean();
     }
     // The default needs to be prod, so we don't deface a website unknowningly
     if (empty($site_role)) {
       $site_role = LOFT_DEPLOY_SITE_ROLE_PROD;
     }
     $data['site_role'] = $site_role;
-
     
     cache_set('loft_deploy:environment', $data, 'cache', CACHE_PERMANENT);
   }
