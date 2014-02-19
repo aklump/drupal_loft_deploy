@@ -23,8 +23,9 @@ This is not just a "dev module" as such, you should enable this module on produc
 
 * If using settings.local.php format, the $site_role variable will inform this module of the role of the site.
 
-* If not you should add the following to settings.php; take note that adding the `$conf variable` as shown here will override what you have in
-  settings.local.php, if in fact you have anything there.  
+* If not you should add the following to settings.php; take note that adding the `$conf variable` as shown here will override what you have in settings.local.php, if in fact you have anything there.  
+
+* You will need to flush Drupal caches each time you change your site role.
 
 
 ##settings.php example
