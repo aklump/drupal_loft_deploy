@@ -24,26 +24,17 @@ define('LOFT_DEPLOY_SITE_ROLE_STAGING', 'staging');
  */
 define('LOFT_DEPLOY_SITE_ROLE_DEV', 'dev');
 
-
 /**
- * Return the cached version of certain environment data.
+ * Get the site role as defined in settings.local.php
  *
- * @return array
- *   - site_role: string
+ * @return string
  */
-function loft_deploy_get_environment() {
-  if ($cache = cache_get('loft_deploy:environment', 'cache')) {
-    $data = empty($cache->data) ? NULL : $cache->data;
-  }
-  else {
-    // Set the default values
-    $data = array();
-    $cache = (object) array('data' => array());
-  }
-  if (empty($data)) {
-
+function loft_deploy_site_role() {
+  $site_role = &drupal_static(__FUNCTION__, NULL);
+  if ($site_role === NULL) {
     // Site role based on settings.local.php  
-    if (file_exists(DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php')) {
+    if (!($site_role = variable_get('loft_deploy_site_role', NULL))
+      && file_exists(DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php')) {
       ob_start();
       include DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php';
       echo $site_role;
@@ -54,25 +45,6 @@ function loft_deploy_get_environment() {
     if (empty($site_role)) {
       $site_role = LOFT_DEPLOY_SITE_ROLE_PROD;
     }
-    $data['site_role'] = $site_role;
-    
-    cache_set('loft_deploy:environment', $data, 'cache', CACHE_PERMANENT);
-  }
-
-  return $data;
-}
-
-
-/**
- * Get the site role as defined in settings.local.php
- *
- * @return string
- */
-function loft_deploy_site_role() {
-  $site_role = &drupal_static(__FUNCTION__, NULL);
-  if ($site_role === NULL) {
-    $data = loft_deploy_get_environment();
-    $site_role = $data['site_role'];
   }
 
   return $site_role;
