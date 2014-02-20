@@ -107,7 +107,8 @@ function loft_deploy_get_title() {
  * Implements hook_preprocess_html().
  */
 function loft_deploy_preprocess_html(&$vars) {
-  if (($site_role = loft_deploy_site_role()) !== LOFT_DEPLOY_SITE_ROLE_PROD) {
+  if (($site_role = loft_deploy_site_role()) !== LOFT_DEPLOY_SITE_ROLE_PROD
+      && empty($_COOKIE['loft_deploy'])) {
     $output = '';
 
     $class = explode(' ', variable_get('loft_deploy_css_class', ''));
