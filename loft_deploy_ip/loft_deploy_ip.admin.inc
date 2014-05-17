@@ -22,22 +22,29 @@
 function loft_deploy_ip_admin_settings($form, &$form_state) {
   $form['loft_deploy_ip_filter'] = array(
     '#type' => 'radios',
-    '#title' => t('Include/exclude by IP'),
+    '#title' => t('Border visibility mode'),
     '#default_value' => variable_get('loft_deploy_ip_filter', LOFT_DEPLOY_IP_FILTER),
     '#options' => array(
-      'include' => t('Include by IP'),
-      'exclude' => t('Exclude by IP'),
+      'include' => t('Show border if IP appears in the list. Hide from everyone else.'),
+      'exclude' => t('Hide border if IP appears in the list. Show to everyone else.'),
     ),
   );
 
-  $form['loft_deploy_ips'] = array(
+  $form['loft_deploy_ip_ips'] = array(
     '#type' => 'textarea',
     '#title' => t('IP List'),
-    '#description' => t('The border display will only affect these ips in the manner specified above.  Enter one or more s, each on a separate line.'),
-    '#default_value' => variable_get('loft_deploy_ips', ''),
+    '#description' => t('The border display will only affect these ips in the manner specified above.  Enter one or more IPs, each on a separate line.'),
+    '#default_value' => implode("\n", variable_get('loft_deploy_ip_ips', array())),
     '#rows' => 5,
     '#resizable' => TRUE,
   );
 
   return system_settings_form($form);
+}
+
+/**
+ * Form validation handler.
+ */
+function loft_deploy_ip_admin_settings_validate($form, &$form_state) {
+  $form_state['values']['loft_deploy_ip_ips'] = array_filter(explode("\n", trim($form_state['values']['loft_deploy_ip_ips'])));
 }

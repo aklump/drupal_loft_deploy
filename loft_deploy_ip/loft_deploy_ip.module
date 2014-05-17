@@ -16,10 +16,12 @@ define('LOFT_DEPLOY_IP_FILTER', 'include');
  * @param  string $site_role
  */
 function loft_deploy_ip_loft_deploy_border_access_alter(&$access, $site_role) {
-  if (($ips = explode("\n", trim(variable_get('loft_deploy_ips', ''))))) {
+  $access = variable_get('loft_deploy_ip_filter', LOFT_DEPLOY_IP_FILTER) === 'include' ? FALSE : TRUE;
+  if (($ips = variable_get('loft_deploy_ip_ips', array()))) {
     foreach ($ips as $ip) {
       if ($_SERVER['REMOTE_ADDR'] == $ip) {
         $access = variable_get('loft_deploy_ip_filter', LOFT_DEPLOY_IP_FILTER) === 'include' ? TRUE : FALSE;
+        break;
       }
     }
   }
