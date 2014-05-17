@@ -103,12 +103,20 @@ function loft_deploy_get_title() {
   return $title;
 }
 
+function loft_deploy_border_access() {
+  $access = ($site_role = loft_deploy_site_role()) !== LOFT_DEPLOY_SITE_ROLE_PROD
+      && empty($_COOKIE['loft_deploy']);
+  drupal_alter('loft_deploy_border_access', $access, $site_role);
+
+  return $access;
+}
+
 /**
  * Implements hook_preprocess_html().
  */
 function loft_deploy_preprocess_html(&$vars) {
-  if (($site_role = loft_deploy_site_role()) !== LOFT_DEPLOY_SITE_ROLE_PROD
-      && empty($_COOKIE['loft_deploy'])) {
+  if (loft_deploy_border_access()) {
+    $site_role = loft_deploy_site_role();
     $output = '';
 
     $class = explode(' ', variable_get('loft_deploy_css_class', ''));
