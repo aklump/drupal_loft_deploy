@@ -25,6 +25,11 @@ define('LOFT_DEPLOY_SITE_ROLE_STAGING', 'staging');
 define('LOFT_DEPLOY_SITE_ROLE_DEV', 'dev');
 
 /**
+ * Used to set the full path to the git binary.
+ */
+define('LOFT_DEPLOY_WHICH_GIT', '/usr/bin/git');
+
+/**
  * Get the site role as defined in settings.local.php
  *
  * @return string
@@ -56,13 +61,14 @@ function loft_deploy_site_role() {
 function loft_deploy_git_branch() {
   $git_branch = &drupal_static(__FUNCTION__, NULL);
   if ($git_branch === NULL) {
-    if (exec('git status', $git)
-      && ($git = implode("\n", $git))
-      && preg_match('/# On branch (.*)\s/', $git, $found)
+    exec(variable_get('loft_deploy_which_git', LOFT_DEPLOY_WHICH_GIT) . ' status', $git);
+    $git = implode(PHP_EOL, $git);
+    if (preg_match('/On branch (.*)\s/i', $git, $found)
       && !($git_branch = $found[1])) {
       $git_branch = NULL;
     }
   }
+
   return $git_branch;
 }
 
