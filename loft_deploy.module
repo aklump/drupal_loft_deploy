@@ -125,19 +125,26 @@ function loft_deploy_preprocess_html(&$vars) {
     $site_role = loft_deploy_site_role();
     $output = '';
 
-    $class = explode(' ', variable_get('loft_deploy_css_class', ''));
+    $class = array();
+    if ($css = trim(variable_get('loft_deploy_css_class', ''))) {
+      $class = explode(' ', $css);
+    }
+    
     if ($git_branch = loft_deploy_git_branch()) {
-      $git_branch = strtolower($git_branch);    
+      $git_branch = strtolower($git_branch);
       $class[] = 'git-' . $git_branch;
+      
       // Gitflow support
       if (strpos($git_branch, 'master') === 0
           || strpos($git_branch, 'hotfix') === 0) {
         $class[] = 'gitflow-master';
       }
-      if (strpos($git_branch, 'develop') === 0
-          || strpos($git_branch, 'feature') === 0
+      elseif (strpos($git_branch, 'develop') === 0
           || strpos($git_branch, 'release') === 0) {
         $class[] = 'gitflow-develop';
+      }
+      elseif (strpos($git_branch, 'feature') === 0) {
+        $class[] = 'gitflow-feature';
       }
     }
     $class = implode(' ', $class);

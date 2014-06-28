@@ -1,14 +1,27 @@
-/* Color: staging*/
+// Remote
+
+// Color: staging
 $staging: #00ff00;
 $text_on_staging: #000;
 
-/* Color: dev.gitflow-master*/
+// Color: staging.gitflow-feature* 
+$staging_feature: #ff7f00;
+$text_on_staging_feature: #000;
+
+// Local
+
+// Color: dev.gitflow-master
 $dev_master: #ff00ff;
 $text_on_dev_master: #fff;
 
-/* Color: dev.gitflow-develop*/
+// Color: dev.gitflow-develop
 $dev_develop: #00ffff;
 $text_on_dev_develop: #000;
+
+// Color: dev.gitflow-feature* 
+$dev_feature: #ffff0a;
+$text_on_dev_feature: #000;
+
 
 /**
  * Positioning
@@ -69,34 +82,39 @@ div.loft-deploy {
 /**
  * Borders & Colors
  */
-div.loft-deploy.prod {
-  display: none;
-}
-div.loft-deploy.staging {
+@mixin borders-colors($color, $text_color) {
   div.border {
-    background-color: $staging;
+    background-color: $color;
   }
   a {
-    background-color: $staging;
-    color: $text_on_staging;
-  }
+    background-color: $color;
+    color: $text_color;
+  }  
 }
-div.loft-deploy.dev.gitflow-master {
-  div.border {
-    background-color: $dev_master;
+
+div.loft-deploy {
+
+  // Never shown on prod.
+  &.prod {
+    display: none;
   }
-  a {
-    background-color: $dev_master;
-    color: $text_on_dev_master;
+
+  // Colorize based on role/git branch.
+  &.staging {
+    @include borders_colors($staging, $text_on_staging);
   }
+  &.staging.gitflow-feature {
+    @include borders_colors($staging_feature, $text_on_staging_feature);
+  }
+  &.dev.gitflow-master {
+    @include borders_colors($dev_master, $text_on_dev_master);
+  }
+  &.dev,
+  &.dev.gitflow-develop {
+    @include borders_colors($dev_develop, $text_on_dev_develop);   
+  }
+  &.dev.gitflow-feature {
+    @include borders_colors($dev_feature, $text_on_dev_feature);
+  }  
 }
-div.loft-deploy.dev,
-div.loft-deploy.dev.gitflow-develop {
-  div.border {
-    background-color: $dev_develop;
-  }
-  a {
-    background-color: $dev_develop;
-    color: $text_on_dev_develop;
-  }
-}
+  
