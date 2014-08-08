@@ -152,7 +152,7 @@ function loft_deploy_preprocess_html(&$vars) {
     $title = loft_deploy_get_title();
     $output .= <<<EOD
 <div class="loft-deploy {$site_role} {$class}">
-  <a class="hide" href="#">
+  <a class="loft-deploy-hide-trigger" href="#">
   {$title}
   </a>
   <!-- Borders. -->

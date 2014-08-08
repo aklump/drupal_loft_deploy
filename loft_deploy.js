@@ -22,8 +22,8 @@
   * Core behavior for loft_deploy.
   */
   Drupal.behaviors.loftDeploy = Drupal.behaviors.loftDeploy || {};
-  Drupal.behaviors.loftDeploy.attach = function (context, settings) {
-    var $toggle = $('.loft-deploy .hide');
+  Drupal.behaviors.loftDeploy.attach = function () {
+    var $toggle = $('.loft-deploy .loft-deploy-hide-trigger');
     var duration = 10;
 
     // Single click hides until next page load
@@ -37,8 +37,6 @@
           });
         });
 
-        $.cookie('loft_deploy', )
-
         // Cookie handling
         var c_name = 'loft_deploy';
         var expiry = new Date();
@@ -48,14 +46,14 @@
         var c_value = $(this).attr('class').match(/hidden/);
         $.cookie(c_name, c_value, {
           expires: expiry.toGMTString()
-        });  
+        });
       }
       else {
         $('.loft-deploy').fadeOut();
       }
       return false;
     });
-  }
+  };
 
   /**
   * @} End of "defgroup loft_deploy".
