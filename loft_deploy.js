@@ -10,7 +10,7 @@ var loftDeploy = loftDeploy || {};
 
 Drupal.behaviors.loftDeploy = function (context) {
   if (Drupal.jsEnabled){
-    var $toggle = $('.loft-deploy .hide');
+    var $toggle = $('.loft-deploy .loft-deploy-hide-trigger');
     var duration = 10;
 
     // Single click hides until next page load
