@@ -1,9 +1,9 @@
 template = drupal
 master = "8.x-1.x 7.x-1.x 6.x-1.x 5.x-1.x"
-develop = "8.x-1.x 7.x-1.x 6.x-1.x 5.x-1.x"
+develop = "8.x-1.x-develop 7.x-1.x-develop 6.x-1.x-develop 5.x-1.x-develop"
 remote = origin
 create_tags = patch
 push_tags = auto
 push_master = auto
-push_develop = no
+push_develop = auto
 micro_prefix = -rc
