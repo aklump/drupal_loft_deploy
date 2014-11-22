@@ -3,3 +3,5 @@ description = Deployment support by In the Loft Studios
 package = Other
 core = 7.x
 version = 7.x-1.6-rc7
+homepage = https://github.com/aklump/drupal_loft_deploy
+author = aklump
