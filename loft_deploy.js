@@ -10,17 +10,6 @@
 (function ($) {
 
   Drupal.loftDeploy = Drupal.loftDeploy || {};
-
-  //Drupal.loftDeploy.someVariable = Drupal.loftDeploy.someVariable || {};
-  //Drupal.loftDeploy.someVariable = value;
-
-  //Drupal.loftDeploy.someFunction = function() {
-  //
-  //}
-
-  /**
-  * Core behavior for loft_deploy.
-  */
   Drupal.behaviors.loftDeploy = Drupal.behaviors.loftDeploy || {};
   Drupal.behaviors.loftDeploy.attach = function () {
     var $toggle = $('.loft-deploy .loft-deploy-hide-trigger');
@@ -28,6 +17,7 @@
 
     // Single click hides until next page load
     $toggle.click(function(e) {
+      var self = this;
 
       // Was the meta key held down? Set cookie?
       if (e.metaKey) {
@@ -39,14 +29,18 @@
 
         // Cookie handling
         var c_name = 'loft_deploy';
+        var c_value = 'hidden';
+        
         var expiry = new Date();
         var time = expiry.getTime();
         time += duration * 60 * 1000;
         expiry.setTime(time);
-        var c_value = $(this).attr('class').match(/hidden/);
+
         $.cookie(c_name, c_value, {
-          expires: expiry.toGMTString()
+          expires: expiry
         });
+
+        console.log(c_name, c_value, expiry);
       }
       else {
         $('.loft-deploy').fadeOut();

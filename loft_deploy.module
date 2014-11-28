@@ -112,7 +112,7 @@ function loft_deploy_get_title() {
 function loft_deploy_border_access() {
   $access = ($site_role = loft_deploy_site_role()) !== LOFT_DEPLOY_SITE_ROLE_PROD
       && empty($_COOKIE['loft_deploy']);
-  drupal_alter('loft_deploy_border_access', $access, $site_role);
+  drupal_alter('loft_deploy_border_access', $access, $site_role, $_COOKIE['loft_deploy']);
 
   return $access;
 }
@@ -170,8 +170,12 @@ EOD;
           drupal_get_path('module', 'loft_deploy') . '/loft_deploy.css',
         ), 
         'js' => array(
-          drupal_get_path('module', 'loft_deploy') . '/loft_deploy.min.js',
-        ), 
+          drupal_get_path('module', 'loft_deploy') . '/loft_deploy.js',
+        ),
+        // This does NOT work for library_load()
+        'library' =>  array(
+          array('system', 'cookie'),
+        ),
       ),
     );
   }
