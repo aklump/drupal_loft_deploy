@@ -38,8 +38,10 @@ This is not just a "dev module" as such, you should enable this module on produc
     SITE ROLE - GIT BRANCH - COLOR
     prod        n/a         n/a
     staging     n/a         green
+    staging     feature     orange
     dev         master      pink
     dev         develop     aqua
+    dev         feature     yellow
 
 ##Info Title
 At the bottom of the page, you will see a readout of information, the "title". By default this will display the site role, and the gitflow parent and current git branch, if you are using git.
@@ -59,6 +61,13 @@ You may influence the css classes on `div.loft-deploy` by adding, as an example:
 
     $conf['loft_deploy_css_class'] = 'my-cool-class';
 
+You may explicitely set the border color like this:
+
+    $conf['loft_deploy_border_color'] = '#BD8FDB'
+
+You may explicitely set the text color like this:
+
+    $conf['loft_deploy_title_color'] = '#fff'
 
 ##Gotchas
 * If your site role changes, you may need to empty all caches to see the changes appear.

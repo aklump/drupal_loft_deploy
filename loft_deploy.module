@@ -149,17 +149,29 @@ function loft_deploy_preprocess_html(&$vars) {
     }
     $class = implode(' ', $class);
 
+    $style = array();
+    if (($border_color = variable_get('loft_deploy_border_color', NULL))) {
+      $style[] = 'background-color: ' . check_plain($border_color);
+    }
+    if (($title_color = variable_get('loft_deploy_title_color', NULL))) {
+      $style[] = 'color: ' . check_plain($title_color);
+    }
+    if ($style) {
+      $attributes['style'] = implode('; ', $style);
+    }
+    $attributes = drupal_attributes($attributes);
     $title = loft_deploy_get_title();
+
     $output .= <<<EOD
 <div class="loft-deploy {$site_role} {$class}">
-  <a class="loft-deploy-hide-trigger" href="#">
+  <a class="loft-deploy-hide-trigger" href="#"{$attributes}>
   {$title}
   </a>
   <!-- Borders. -->
-  <div class="border n"></div>
-  <div class="border e"></div>
-  <div class="border s"></div>
-  <div class="border w"></div>
+  <div class="border n"{$attributes}></div>
+  <div class="border e"{$attributes}></div>
+  <div class="border s"{$attributes}></div>
+  <div class="border w"{$attributes}></div>
   </div>
 EOD;
 
