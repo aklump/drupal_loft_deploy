@@ -50,9 +50,28 @@ function loft_deploy_site_role() {
     if (empty($site_role)) {
       $site_role = LOFT_DEPLOY_SITE_ROLE_PROD;
     }
+    drupal_alter('loft_deploy_site_role', $site_role);
   }
 
   return $site_role;
+}
+
+/**
+ * Return the ip of the server.
+ *
+ * @return string
+ */
+function loft_deploy_ip() {
+  $ip = &drupal_static(__FUNCTION__, NULL);
+  if (!isset($ip)) {
+    $ip = $_SERVER['REMOTE_ADDR'];
+    if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)) {
+        $ip = array_pop(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']));
+    }
+    drupal_alter('loft_deploy_ip', $ip);
+  }
+
+  return $ip;
 }
 
 /**
@@ -67,6 +86,7 @@ function loft_deploy_git_branch() {
       && !($git_branch = $found[1])) {
       $git_branch = NULL;
     }
+    drupal_alter('loft_deploy_git_branch', $git_branch);
   }
 
   return $git_branch;
@@ -109,10 +129,18 @@ function loft_deploy_get_title() {
   return $title;
 }
 
+/**
+ * Determine if the current user should see the border.
+ *
+ * @return bool
+ */
 function loft_deploy_border_access() {
-  $access = ($site_role = loft_deploy_site_role()) !== LOFT_DEPLOY_SITE_ROLE_PROD
-      && empty($_COOKIE['loft_deploy']);
-  drupal_alter('loft_deploy_border_access', $access, $site_role, $_COOKIE['loft_deploy']);
+  $access = &drupal_static(__FUNCTION__, NULL);
+  if (!isset($access)) {
+    $access = ($site_role = loft_deploy_site_role()) !== LOFT_DEPLOY_SITE_ROLE_PROD
+        && empty($_COOKIE['loft_deploy']);
+    drupal_alter('loft_deploy_border_access', $access, $site_role, $_COOKIE['loft_deploy']);
+  }
 
   return $access;
 }
@@ -125,30 +153,41 @@ function loft_deploy_preprocess_html(&$vars) {
     $site_role = loft_deploy_site_role();
     $output = '';
 
-    $class = array();
+    $wrapper_attributes = array('class' => array('loft-deploy', $site_role));
     if ($css = trim(variable_get('loft_deploy_css_class', ''))) {
-      $class = explode(' ', $css);
+      $wrapper_attributes['class'] = explode(' ', $css);
+    }
+
+    // Add in the ip class
+    if (($ip = loft_deploy_ip())) {
+      if ($ip === '127.0.0.1') {
+        $ip = 'localhost';
+      }
+      else {
+        $ip = 'ip-' . str_replace('.', '-', $ip);
+      }
+      $wrapper_attributes['class'][] = $ip;
     }
     
     if ($git_branch = loft_deploy_git_branch()) {
       $git_branch = strtolower($git_branch);
-      $class[] = 'git-' . $git_branch;
+      $wrapper_attributes['class'][] = 'git-' . $git_branch;
       
       // Gitflow support
       if (strpos($git_branch, 'master') === 0
           || strpos($git_branch, 'hotfix') === 0) {
-        $class[] = 'gitflow-master';
+        $wrapper_attributes['class'][] = 'gitflow-master';
       }
       elseif (strpos($git_branch, 'develop') === 0
           || strpos($git_branch, 'release') === 0) {
-        $class[] = 'gitflow-develop';
+        $wrapper_attributes['class'][] = 'gitflow-develop';
       }
       elseif (strpos($git_branch, 'feature') === 0) {
-        $class[] = 'gitflow-feature';
+        $wrapper_attributes['class'][] = 'gitflow-feature';
       }
     }
-    $class = implode(' ', $class);
 
+    // Add in some styles based on color settings in $conf.
     $style = array();
     if (($border_color = variable_get('loft_deploy_border_color', NULL))) {
       $style[] = 'background-color: ' . check_plain($border_color);
@@ -157,21 +196,27 @@ function loft_deploy_preprocess_html(&$vars) {
       $style[] = 'color: ' . check_plain($title_color);
     }
     if ($style) {
-      $attributes['style'] = implode('; ', $style);
+      $style = implode('; ', $style);
+      $style = drupal_attributes(array('style' => $style));
     }
-    $attributes = drupal_attributes($attributes);
-    $title = loft_deploy_get_title();
+    else {
+      $style = '';
+    }
+  
+    // Prepare vars for tpl.
+    $wrapper_attributes = drupal_attributes($wrapper_attributes);
+    $title              = loft_deploy_get_title();
 
     $output .= <<<EOD
-<div class="loft-deploy {$site_role} {$class}">
-  <a class="loft-deploy-hide-trigger" href="#"{$attributes}>
+<div{$wrapper_attributes}">
+  <a class="loft-deploy-hide-trigger" href="#"{$style}>
   {$title}
   </a>
   <!-- Borders. -->
-  <div class="border n"{$attributes}></div>
-  <div class="border e"{$attributes}></div>
-  <div class="border s"{$attributes}></div>
-  <div class="border w"{$attributes}></div>
+  <div class="border n"{$style}></div>
+  <div class="border e"{$style}></div>
+  <div class="border s"{$style}></div>
+  <div class="border w"{$style}></div>
   </div>
 EOD;
 

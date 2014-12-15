@@ -34,6 +34,27 @@ function hook_loft_deploy_title_post_alter(&$title) {
 }
 
 /**
+ * Implements hook_loft_deploy_ip_alter().
+ */
+function hook_loft_deploy_ip_alter(&$ip) {
+  
+}
+
+/**
+ * Implements hook_loft_deploy_site_role_alter().
+ */
+function hook_loft_deploy_site_role_alter(&$site_role) {
+  
+}
+
+/**
+ * Implements hook_loft_deploy_git_branch_alter().
+ */
+function hook_loft_deploy_git_branch_alter(&$git_branch) {
+  
+}
+
+/**
  * Implements hook_loft_deploy_border_access().
  *
  * @param  bool $access Set to TRUE to show the border or FALSE to hide.

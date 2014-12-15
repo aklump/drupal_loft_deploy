@@ -16,7 +16,7 @@ function loft_deploy_ip_loft_deploy_border_access_alter(&$access, $site_role, $c
   $access = variable_get('loft_deploy_ip_filter', LOFT_DEPLOY_IP_FILTER) === 'include' ? FALSE : TRUE;
   if (($ips = variable_get('loft_deploy_ip_ips', array()))) {
     foreach ($ips as $ip) {
-      if ($_SERVER['REMOTE_ADDR'] == $ip) {
+      if (loft_deploy_ip() == $ip) {
         $access = variable_get('loft_deploy_ip_filter', LOFT_DEPLOY_IP_FILTER) === 'include' ? TRUE : FALSE;
         break;
       }

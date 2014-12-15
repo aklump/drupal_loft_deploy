@@ -93,6 +93,7 @@ div.loft-deploy {
 }
 
 div.loft-deploy {
+  @include borders_colors(#fff, #000);
 
   // Never shown on prod.
   &.prod {
