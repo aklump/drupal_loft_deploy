@@ -22,6 +22,7 @@ $text_on_dev_develop: #000;
 $dev_feature: #ffff0a;
 $text_on_dev_feature: #000;
 
+$border_width: 6px;
 
 /**
  * Positioning
@@ -31,7 +32,7 @@ div.loft-deploy {
   position: fixed;
   right: 0px;
   top: 0px;
-  z-index: 500;
+  z-index: 998; //admin menu is 999
   div.border {
     position: fixed;
   }
@@ -51,7 +52,7 @@ div.loft-deploy {
     -moz-border-radius-topleft: 15px;
   }
   div.border.n {
-    height: 8px;
+    height: $border_width;
     left: 0px;
     right: 0px;
     top: 0px;
@@ -60,11 +61,11 @@ div.loft-deploy {
     bottom: 0px;
     right: 0px;
     top: 0px;
-    width: 8px;
+    width: $border_width;
   }
   div.border.s {
     bottom: 0px;
-    height: 8px;
+    height: $border_width;
     left: 0px;
     right: 0px;
   }
@@ -72,7 +73,7 @@ div.loft-deploy {
     bottom: 0px;
     left: 0px;
     top: 0px;
-    width: 8px;
+    width: $border_width;
   }
   a:hover {
     text-decoration: none;
