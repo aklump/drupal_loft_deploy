@@ -64,7 +64,7 @@ function loft_deploy_site_role() {
 function loft_deploy_ip() {
   $ip = &drupal_static(__FUNCTION__, NULL);
   if (!isset($ip)) {
-    $ip = $_SERVER['REMOTE_ADDR'];
+    $ip = trim($_SERVER['REMOTE_ADDR']);
     if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)) {
         $ip = array_pop(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']));
     }
