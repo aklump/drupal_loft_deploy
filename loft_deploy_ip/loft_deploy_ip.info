@@ -3,3 +3,5 @@ description = Hide/Show the borders by IP
 package = Other
 core = 7.x
 version = VERSION
+
+dependencies[] = loft_deploy
