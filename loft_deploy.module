@@ -30,6 +30,13 @@ define('LOFT_DEPLOY_SITE_ROLE_DEV', 'dev');
 define('LOFT_DEPLOY_WHICH_GIT', '/usr/bin/git');
 
 /**
+ * @var LOFT_DEPLOY_META_TIMEOUT
+ *
+ * Default number of seconds for the meta key timeout.
+ */
+define('LOFT_DEPLOY_META_TIMEOUT', 600);
+
+/**
  * Get the site role as defined in settings.local.php
  *
  * @return string
@@ -157,6 +164,13 @@ function loft_deploy_preprocess_html(&$vars) {
     if ($css = trim(variable_get('loft_deploy_css_class', ''))) {
       $wrapper_attributes['class'] = explode(' ', $css);
     }
+
+    // Send the JS settings
+    drupal_add_js(array(
+      'loftDeploy' => array(
+        'metaTimeout' => variable_get('loft_deploy_meta_timeout', LOFT_DEPLOY_META_TIMEOUT),
+      ),
+    ), 'setting');
 
     // Add in the ip class
     if (($ip = loft_deploy_ip())) {

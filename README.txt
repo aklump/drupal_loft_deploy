@@ -46,7 +46,10 @@ This is not just a "dev module" as such, you should enable this module on produc
 ##Info Title
 At the bottom of the page, you will see a readout of information, the "title". By default this will display the site role, and the gitflow parent and current git branch, if you are using git.
 
-Click this title to hide the visual border; CMD or CTRL click this to hide it for 10 minutes.
+Click this title to hide the visual border; CMD or CTRL click this to hide it for 10 minutes.  The duration of this can be controlled using settings.php, e.g.:
+
+    // Define the number of seconds to disable the border when clicking the metakey.
+    $conf['loft_deploy_meta_timeout'] = 600
 
 You may alter the title that is displayed at the bottom of the screen by   adding the following to settings.local.php or settings.php, where the token '!site_role' will print the site role.  Other tokens are: !git and !gitflow.
        

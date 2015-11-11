@@ -11,9 +11,9 @@
 
   Drupal.loftDeploy = Drupal.loftDeploy || {};
   Drupal.behaviors.loftDeploy = Drupal.behaviors.loftDeploy || {};
-  Drupal.behaviors.loftDeploy.attach = function () {
+  Drupal.behaviors.loftDeploy.attach = function (context, settings) {
     var $toggle = $('.loft-deploy .loft-deploy-hide-trigger');
-    var duration = 10;
+    var duration = settings.loftDeploy.metaTimeout;
 
     // Single click hides until next page load
     $toggle.click(function(e) {
@@ -33,7 +33,7 @@
         
         var expiry = new Date();
         var time = expiry.getTime();
-        time += duration * 60 * 1000;
+        time += duration * 1000;
         expiry.setTime(time);
 
         $.cookie(c_name, c_value, {
