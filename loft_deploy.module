@@ -73,8 +73,9 @@ function loft_deploy_ip() {
   if (!isset($ip)) {
     $ip = trim($_SERVER['REMOTE_ADDR']);
     if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)) {
-        $ip = array_pop(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']));
+      $ip = array_pop(explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']));
     }
+    $ip = trim($ip);
     drupal_alter('loft_deploy_ip', $ip);
   }
 
@@ -115,18 +116,18 @@ function loft_deploy_get_title() {
 
     // Now start replacing tokens
     $title = str_replace('!site_role', loft_deploy_site_role(), $title);
-    
+
     if ($git_branch = loft_deploy_git_branch()) {
       $git_branch = strtolower($git_branch);
       $title = str_replace('!git_branch', $git_branch, $title);
       // Gitflow support
       if (strpos($git_branch, 'master') === 0
-          || strpos($git_branch, 'hotfix') === 0) {
+        || strpos($git_branch, 'hotfix') === 0) {
         $title = str_replace('!gitflow', 'master', $title);
       }
       if (strpos($git_branch, 'develop') === 0
-          || strpos($git_branch, 'feature') === 0
-          || strpos($git_branch, 'release') === 0) {
+        || strpos($git_branch, 'feature') === 0
+        || strpos($git_branch, 'release') === 0) {
         $title = str_replace('!gitflow', 'develop', $title);
       }
     }
@@ -145,7 +146,7 @@ function loft_deploy_border_access() {
   $access = &drupal_static(__FUNCTION__, NULL);
   if (!isset($access)) {
     $access = ($site_role = loft_deploy_site_role()) !== LOFT_DEPLOY_SITE_ROLE_PROD
-        && empty($_COOKIE['loft_deploy']);
+      && empty($_COOKIE['loft_deploy']);
     drupal_alter('loft_deploy_border_access', $access, $site_role, $_COOKIE['loft_deploy']);
   }
 
@@ -182,18 +183,18 @@ function loft_deploy_preprocess_html(&$vars) {
       }
       $wrapper_attributes['class'][] = $ip;
     }
-    
+
     if ($git_branch = loft_deploy_git_branch()) {
       $git_branch = strtolower($git_branch);
       $wrapper_attributes['class'][] = 'git-' . $git_branch;
-      
+
       // Gitflow support
       if (strpos($git_branch, 'master') === 0
-          || strpos($git_branch, 'hotfix') === 0) {
+        || strpos($git_branch, 'hotfix') === 0) {
         $wrapper_attributes['class'][] = 'gitflow-master';
       }
       elseif (strpos($git_branch, 'develop') === 0
-          || strpos($git_branch, 'release') === 0) {
+        || strpos($git_branch, 'release') === 0) {
         $wrapper_attributes['class'][] = 'gitflow-develop';
       }
       elseif (strpos($git_branch, 'feature') === 0) {
@@ -216,7 +217,7 @@ function loft_deploy_preprocess_html(&$vars) {
     else {
       $style = '';
     }
-  
+
     // Prepare vars for tpl.
     $wrapper_attributes = drupal_attributes($wrapper_attributes);
     $title              = loft_deploy_get_title();
@@ -239,7 +240,7 @@ EOD;
       '#attached' => array(
         'css' => array(
           drupal_get_path('module', 'loft_deploy') . '/loft_deploy.css',
-        ), 
+        ),
         // This does NOT work for library_load()
         'library' =>  array(
           array('system', 'cookie'),
