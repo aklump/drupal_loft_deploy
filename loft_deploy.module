@@ -37,6 +37,12 @@ define('LOFT_DEPLOY_WHICH_GIT', '/usr/bin/git');
 define('LOFT_DEPLOY_META_TIMEOUT', 600);
 
 /**
+ * Register module to be available in boot_invocations.
+ */
+function loft_deploy_boot() {
+}
+
+/**
  * Get the site role as defined in settings.local.php
  *
  * @return string
@@ -46,7 +52,8 @@ function loft_deploy_site_role() {
   if ($site_role === NULL) {
     // Site role based on settings.local.php  
     if (!($site_role = variable_get('loft_deploy_site_role', NULL))
-      && file_exists(DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php')) {
+      && file_exists(DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php')
+    ) {
       ob_start();
       include DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php';
       echo $site_role;
@@ -91,7 +98,8 @@ function loft_deploy_git_branch() {
     exec(variable_get('loft_deploy_which_git', LOFT_DEPLOY_WHICH_GIT) . ' status', $git);
     $git = implode(PHP_EOL, $git);
     if (preg_match('/On branch (.*)\s/i', $git, $found)
-      && !($git_branch = $found[1])) {
+      && !($git_branch = $found[1])
+    ) {
       $git_branch = NULL;
     }
     drupal_alter('loft_deploy_git_branch', $git_branch);
@@ -122,12 +130,14 @@ function loft_deploy_get_title() {
       $title = str_replace('!git_branch', $git_branch, $title);
       // Gitflow support
       if (strpos($git_branch, 'master') === 0
-        || strpos($git_branch, 'hotfix') === 0) {
+        || strpos($git_branch, 'hotfix') === 0
+      ) {
         $title = str_replace('!gitflow', 'master', $title);
       }
       if (strpos($git_branch, 'develop') === 0
         || strpos($git_branch, 'feature') === 0
-        || strpos($git_branch, 'release') === 0) {
+        || strpos($git_branch, 'release') === 0
+      ) {
         $title = str_replace('!gitflow', 'develop', $title);
       }
     }
@@ -190,11 +200,13 @@ function loft_deploy_preprocess_html(&$vars) {
 
       // Gitflow support
       if (strpos($git_branch, 'master') === 0
-        || strpos($git_branch, 'hotfix') === 0) {
+        || strpos($git_branch, 'hotfix') === 0
+      ) {
         $wrapper_attributes['class'][] = 'gitflow-master';
       }
       elseif (strpos($git_branch, 'develop') === 0
-        || strpos($git_branch, 'release') === 0) {
+        || strpos($git_branch, 'release') === 0
+      ) {
         $wrapper_attributes['class'][] = 'gitflow-develop';
       }
       elseif (strpos($git_branch, 'feature') === 0) {
@@ -220,7 +232,7 @@ function loft_deploy_preprocess_html(&$vars) {
 
     // Prepare vars for tpl.
     $wrapper_attributes = drupal_attributes($wrapper_attributes);
-    $title              = loft_deploy_get_title();
+    $title = loft_deploy_get_title();
 
     $output .= <<<EOD
 <div{$wrapper_attributes}">
@@ -236,23 +248,23 @@ function loft_deploy_preprocess_html(&$vars) {
 EOD;
 
     $vars['page']['page_bottom']['loft_deploy_border'] = array(
-      '#markup' => $output,
+      '#markup'   => $output,
       '#attached' => array(
-        'css' => array(
+        'css'     => array(
           drupal_get_path('module', 'loft_deploy') . '/loft_deploy.css',
         ),
         // This does NOT work for library_load()
-        'library' =>  array(
+        'library' => array(
           array('system', 'cookie'),
         ),
       ),
     );
 
-    $vars['page']['page_bottom']['loft_deploy_border']['#attached']['js'][] =  array(
-      'type' => 'file',
+    $vars['page']['page_bottom']['loft_deploy_border']['#attached']['js'][] = array(
+      'type'  => 'file',
       'scope' => 'footer',
       'group' => JS_THEME,
-      'data' => drupal_get_path('module', 'loft_deploy') . '/loft_deploy.js',
+      'data'  => drupal_get_path('module', 'loft_deploy') . '/loft_deploy.js',
     );
   }
 }
