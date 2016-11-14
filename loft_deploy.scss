@@ -1,7 +1,7 @@
 // Remote
 
 // Color: staging
-$staging: #00ff00;
+$staging: #0f0;
 $text_on_staging: #000;
 
 // Color: staging.gitflow-feature* 
@@ -11,11 +11,11 @@ $text_on_staging_feature: #000;
 // Local
 
 // Color: dev.gitflow-master
-$dev_master: #ff00ff;
+$dev_master: #f0f;
 $text_on_dev_master: #fff;
 
 // Color: dev.gitflow-develop
-$dev_develop: #00ffff;
+$dev_develop: #0ff;
 $text_on_dev_develop: #000;
 
 // Color: dev.gitflow-feature* 
@@ -90,7 +90,7 @@ div.loft-deploy {
   a {
     background-color: $color;
     color: $text_color;
-  }  
+  }
 }
 
 div.loft-deploy {
@@ -113,10 +113,9 @@ div.loft-deploy {
   }
   &.dev,
   &.dev.gitflow-develop {
-    @include borders_colors($dev_develop, $text_on_dev_develop);   
+    @include borders_colors($dev_develop, $text_on_dev_develop);
   }
   &.dev.gitflow-feature {
     @include borders_colors($dev_feature, $text_on_dev_feature);
-  }  
+  }
 }
-  

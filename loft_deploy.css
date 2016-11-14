@@ -51,33 +51,45 @@ div.loft-deploy {
  */
 div.loft-deploy div.border {
   background-color: #fff; }
+
 div.loft-deploy a {
   background-color: #fff;
   color: #000; }
+
 div.loft-deploy.prod {
   display: none; }
+
 div.loft-deploy.staging div.border {
-  background-color: #00ff00; }
+  background-color: #0f0; }
+
 div.loft-deploy.staging a {
-  background-color: #00ff00;
+  background-color: #0f0;
   color: #000; }
+
 div.loft-deploy.staging.gitflow-feature div.border {
   background-color: #ff7f00; }
+
 div.loft-deploy.staging.gitflow-feature a {
   background-color: #ff7f00;
   color: #000; }
+
 div.loft-deploy.dev.gitflow-master div.border {
-  background-color: #ff00ff; }
+  background-color: #f0f; }
+
 div.loft-deploy.dev.gitflow-master a {
-  background-color: #ff00ff;
+  background-color: #f0f;
   color: #fff; }
+
 div.loft-deploy.dev div.border, div.loft-deploy.dev.gitflow-develop div.border {
-  background-color: #00ffff; }
+  background-color: #0ff; }
+
 div.loft-deploy.dev a, div.loft-deploy.dev.gitflow-develop a {
-  background-color: #00ffff;
+  background-color: #0ff;
   color: #000; }
+
 div.loft-deploy.dev.gitflow-feature div.border {
   background-color: #ffff0a; }
+
 div.loft-deploy.dev.gitflow-feature a {
   background-color: #ffff0a;
   color: #000; }
