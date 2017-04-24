@@ -75,6 +75,13 @@ You may explicitely set the text color like this:
 ##Gotchas
 * If your site role changes, you may need to empty all caches to see the changes appear.
 
+
+## Quick hide border always
+
+Add the following to `settings.local.php` and the border will not show, ever, for any reason.
+
+    $conf['loft_deploy_border'] = false;
+
 ##Contact
 In the Loft Studios  
 Aaron Klump - Web Developer  
