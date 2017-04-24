@@ -168,7 +168,7 @@ function loft_deploy_border_access()
         drupal_alter('loft_deploy_border_access', $access, $site_role, $_COOKIE['loft_deploy']);
     }
 
-    return $access;
+    return $access && variable_get('loft_deploy_border', true);
 }
 
 /**
