@@ -1,7 +1,8 @@
 <?php
+
 /**
  * @file
- * Base module file for loft_deploy
+ * Base module file for loft_deploy.
  *
  * @defgroup loft_deploy Loft Deploy
  * @{
@@ -11,14 +12,17 @@
  * @var LOFT_DEPLOY_SITE_ROLE
  */
 define('LOFT_DEPLOY_SITE_ROLE', 'prod');
+
 /**
  * @var LOFT_DEPLOY_SITE_ROLE_PROD
  */
 define('LOFT_DEPLOY_SITE_ROLE_PROD', 'prod');
+
 /**
  * @var LOFT_DEPLOY_SITE_ROLE_STAGING
  */
 define('LOFT_DEPLOY_SITE_ROLE_STAGING', 'staging');
+
 /**
  * @var LOFT_DEPLOY_SITE_ROLE_DEV
  */
@@ -39,8 +43,7 @@ define('LOFT_DEPLOY_META_TIMEOUT', 600);
 /**
  * Register module to be available in boot_invocations.
  */
-function loft_deploy_boot()
-{
+function loft_deploy_boot() {
 }
 
 /**
@@ -48,28 +51,27 @@ function loft_deploy_boot()
  *
  * @return string
  */
-function loft_deploy_site_role()
-{
-    $site_role = &drupal_static(__FUNCTION__, null);
-    if ($site_role === null) {
-        // Site role based on settings.local.php
-        if (!($site_role = variable_get('loft_deploy_site_role', null))
-            && file_exists(DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php')
-        ) {
-            ob_start();
-            include DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php';
-            echo $site_role;
-            $site_role = ob_get_contents();
-            ob_end_clean();
-        }
-        // The default needs to be prod, so we don't deface a website unknowningly
-        if (empty($site_role)) {
-            $site_role = LOFT_DEPLOY_SITE_ROLE_PROD;
-        }
-        drupal_alter('loft_deploy_site_role', $site_role);
+function loft_deploy_site_role() {
+  $site_role = &drupal_static(__FUNCTION__, NULL);
+  if ($site_role === NULL) {
+    // Site role based on settings.local.php
+    if (!($site_role = variable_get('loft_deploy_site_role', NULL))
+      && file_exists(DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php')
+    ) {
+      ob_start();
+      include DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php';
+      echo $site_role;
+      $site_role = ob_get_contents();
+      ob_end_clean();
     }
+    // The default needs to be prod, so we don't deface a website unknowningly
+    if (empty($site_role)) {
+      $site_role = LOFT_DEPLOY_SITE_ROLE_PROD;
+    }
+    drupal_alter('loft_deploy_site_role', $site_role);
+  }
 
-    return $site_role;
+  return $site_role;
 }
 
 /**
@@ -77,41 +79,39 @@ function loft_deploy_site_role()
  *
  * @return string
  */
-function loft_deploy_ip()
-{
-    $ip = &drupal_static(__FUNCTION__, null);
-    if (!isset($ip)) {
-        $ip = trim($_SERVER['REMOTE_ADDR']);
-        if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)
-            && ($forwards = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']))
-        ) {
-            $ip = array_pop($forwards);
-        }
-        $ip = trim($ip);
-        drupal_alter('loft_deploy_ip', $ip);
+function loft_deploy_ip() {
+  $ip = &drupal_static(__FUNCTION__, NULL);
+  if (!isset($ip)) {
+    $ip = trim($_SERVER['REMOTE_ADDR']);
+    if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)
+      && ($forwards = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']))
+    ) {
+      $ip = array_pop($forwards);
     }
+    $ip = trim($ip);
+    drupal_alter('loft_deploy_ip', $ip);
+  }
 
-    return $ip;
+  return $ip;
 }
 
 /**
  * Get the site role as defined in settings.local.php
  */
-function loft_deploy_git_branch()
-{
-    $git_branch = &drupal_static(__FUNCTION__, null);
-    if ($git_branch === null) {
-        exec(variable_get('loft_deploy_which_git', LOFT_DEPLOY_WHICH_GIT) . ' status', $git);
-        $git = implode(PHP_EOL, $git);
-        if (preg_match('/On branch (.*)\s/i', $git, $found)
-            && !($git_branch = $found[1])
-        ) {
-            $git_branch = null;
-        }
-        drupal_alter('loft_deploy_git_branch', $git_branch);
+function loft_deploy_git_branch() {
+  $git_branch = &drupal_static(__FUNCTION__, NULL);
+  if ($git_branch === NULL) {
+    exec(variable_get('loft_deploy_which_git', LOFT_DEPLOY_WHICH_GIT) . ' status', $git);
+    $git = implode(PHP_EOL, $git);
+    if (preg_match('/On branch (.*)\s/i', $git, $found)
+      && !($git_branch = $found[1])
+    ) {
+      $git_branch = NULL;
     }
+    drupal_alter('loft_deploy_git_branch', $git_branch);
+  }
 
-    return $git_branch;
+  return $git_branch;
 }
 
 /**
@@ -121,37 +121,36 @@ function loft_deploy_git_branch()
  *
  * @return string
  */
-function loft_deploy_get_title()
-{
-    $title = &drupal_static(__FUNCTION__, '');
-    if (empty($title)) {
-        // Set up the title template
-        $title = variable_get('loft_deploy_site_title', 'Role: !site_role ~ Branch: !git_branch');
-        drupal_alter('loft_deploy_title_pre', $title);
+function loft_deploy_get_title() {
+  $title = &drupal_static(__FUNCTION__, '');
+  if (empty($title)) {
+    // Set up the title template
+    $title = variable_get('loft_deploy_site_title', 'Role: !site_role ~ Branch: !git_branch');
+    drupal_alter('loft_deploy_title_pre', $title);
 
-        // Now start replacing tokens
-        $title = str_replace('!site_role', loft_deploy_site_role(), $title);
+    // Now start replacing tokens
+    $title = str_replace('!site_role', loft_deploy_site_role(), $title);
 
-        if ($git_branch = loft_deploy_git_branch()) {
-            $git_branch = strtolower($git_branch);
-            $title = str_replace('!git_branch', $git_branch, $title);
-            // Gitflow support
-            if (strpos($git_branch, 'master') === 0
-                || strpos($git_branch, 'hotfix') === 0
-            ) {
-                $title = str_replace('!gitflow', 'master', $title);
-            }
-            if (strpos($git_branch, 'develop') === 0
-                || strpos($git_branch, 'feature') === 0
-                || strpos($git_branch, 'release') === 0
-            ) {
-                $title = str_replace('!gitflow', 'develop', $title);
-            }
-        }
-        drupal_alter('loft_deploy_title_post', $title);
+    if ($git_branch = loft_deploy_git_branch()) {
+      $git_branch = strtolower($git_branch);
+      $title = str_replace('!git_branch', $git_branch, $title);
+      // Gitflow support
+      if (strpos($git_branch, 'master') === 0
+        || strpos($git_branch, 'hotfix') === 0
+      ) {
+        $title = str_replace('!gitflow', 'master', $title);
+      }
+      if (strpos($git_branch, 'develop') === 0
+        || strpos($git_branch, 'feature') === 0
+        || strpos($git_branch, 'release') === 0
+      ) {
+        $title = str_replace('!gitflow', 'develop', $title);
+      }
     }
+    drupal_alter('loft_deploy_title_post', $title);
+  }
 
-    return $title;
+  return $title;
 }
 
 /**
@@ -159,96 +158,94 @@ function loft_deploy_get_title()
  *
  * @return bool
  */
-function loft_deploy_border_access()
-{
-    $access = &drupal_static(__FUNCTION__, null);
-    if (!isset($access)) {
-        $access = ($site_role = loft_deploy_site_role()) !== LOFT_DEPLOY_SITE_ROLE_PROD
-            && empty($_COOKIE['loft_deploy']);
-        drupal_alter('loft_deploy_border_access', $access, $site_role, $_COOKIE['loft_deploy']);
-    }
+function loft_deploy_border_access() {
+  $access = &drupal_static(__FUNCTION__, NULL);
+  if (!isset($access)) {
+    $access = ($site_role = loft_deploy_site_role()) !== LOFT_DEPLOY_SITE_ROLE_PROD
+      && empty($_COOKIE['loft_deploy']);
+    drupal_alter('loft_deploy_border_access', $access, $site_role, $_COOKIE['loft_deploy']);
+  }
 
-    return $access && variable_get('loft_deploy_border', true);
+  return $access && variable_get('loft_deploy_border', TRUE);
 }
 
 /**
  * Implements hook_preprocess_html().
  */
-function loft_deploy_preprocess_html(&$vars)
-{
-    if (loft_deploy_border_access()) {
-        $site_role = loft_deploy_site_role();
-        $output = '';
+function loft_deploy_preprocess_html(&$vars) {
+  if (loft_deploy_border_access()) {
+    $site_role = loft_deploy_site_role();
+    $output = '';
 
-        $wrapper_attributes = array(
-            'class' => array(
-                'loft-deploy',
-                $site_role,
-            ),
-        );
-        if ($css = trim(variable_get('loft_deploy_css_class', ''))) {
-            $wrapper_attributes['class'] = explode(' ', $css);
-        }
+    $wrapper_attributes = array(
+      'class' => array(
+        'loft-deploy',
+        $site_role,
+      ),
+    );
+    if ($css = trim(variable_get('loft_deploy_css_class', ''))) {
+      $wrapper_attributes['class'] = explode(' ', $css);
+    }
 
-        // Send the JS settings
-        drupal_add_js(array(
-            'loftDeploy' => array(
-                'metaTimeout' => variable_get('loft_deploy_meta_timeout', LOFT_DEPLOY_META_TIMEOUT),
-            ),
-        ), 'setting');
+    // Send the JS settings
+    drupal_add_js(array(
+      'loftDeploy' => array(
+        'metaTimeout' => variable_get('loft_deploy_meta_timeout', LOFT_DEPLOY_META_TIMEOUT),
+      ),
+    ), 'setting');
 
-        // Add in the ip class
-        if (($ip = loft_deploy_ip())) {
-            if ($ip === '127.0.0.1') {
-                $ip = 'localhost';
-            }
-            else {
-                $ip = 'ip-' . str_replace('.', '-', $ip);
-            }
-            $wrapper_attributes['class'][] = $ip;
-        }
+    // Add in the ip class
+    if (($ip = loft_deploy_ip())) {
+      if ($ip === '127.0.0.1') {
+        $ip = 'localhost';
+      }
+      else {
+        $ip = 'ip-' . str_replace('.', '-', $ip);
+      }
+      $wrapper_attributes['class'][] = $ip;
+    }
 
-        if ($git_branch = loft_deploy_git_branch()) {
-            $git_branch = strtolower($git_branch);
-            $wrapper_attributes['class'][] = 'git-' . $git_branch;
+    if ($git_branch = loft_deploy_git_branch()) {
+      $git_branch = strtolower($git_branch);
+      $wrapper_attributes['class'][] = 'git-' . $git_branch;
 
-            // Gitflow support
-            if (strpos($git_branch, 'master') === 0
-                || strpos($git_branch, 'hotfix') === 0
-            ) {
-                $wrapper_attributes['class'][] = 'gitflow-master';
-            }
-            elseif (strpos($git_branch, 'develop') === 0
-                || strpos($git_branch, 'release') === 0
-            ) {
-                $wrapper_attributes['class'][] = 'gitflow-develop';
-            }
-            elseif (strpos($git_branch, 'feature') === 0) {
-                $wrapper_attributes['class'][] = 'gitflow-feature';
-            }
-        }
+      // Gitflow support
+      if (strpos($git_branch, 'master') === 0
+        || strpos($git_branch, 'hotfix') === 0
+      ) {
+        $wrapper_attributes['class'][] = 'gitflow-master';
+      }
+      elseif (strpos($git_branch, 'develop') === 0
+        || strpos($git_branch, 'release') === 0
+      ) {
+        $wrapper_attributes['class'][] = 'gitflow-develop';
+      }
+      elseif (strpos($git_branch, 'feature') === 0) {
+        $wrapper_attributes['class'][] = 'gitflow-feature';
+      }
+    }
 
-        // Add in some styles based on color settings in $conf.
-        $style = array();
-        if (($border_color = variable_get('loft_deploy_border_color', null))) {
-            $style[] = 'background-color: ' . check_plain($border_color);
-        }
-        if (($title_color = variable_get('loft_deploy_title_color', null))) {
-            $style[] = 'color: ' . check_plain($title_color);
-        }
-        if ($style) {
-            $style = implode('; ', $style);
-            $style = drupal_attributes(array('style' => $style));
-        }
-        else {
-            $style = '';
-        }
+    // Add in some styles based on color settings in $conf.
+    $style = array();
+    if (($border_color = variable_get('loft_deploy_border_color', NULL))) {
+      $style[] = 'background-color: ' . check_plain($border_color);
+    }
+    if (($title_color = variable_get('loft_deploy_title_color', NULL))) {
+      $style[] = 'color: ' . check_plain($title_color);
+    }
+    if ($style) {
+      $style = implode('; ', $style);
+      $style = drupal_attributes(array('style' => $style));
+    }
+    else {
+      $style = '';
+    }
 
-        // Prepare vars for tpl.
-        $wrapper_attributes = drupal_attributes($wrapper_attributes);
-        $title = loft_deploy_get_title();
+    // Prepare vars for tpl.
+    $wrapper_attributes = drupal_attributes($wrapper_attributes);
+    $title = loft_deploy_get_title();
 
-        $output .= <<<EOD
+    $output .= <<<EOD
 <div{$wrapper_attributes}">
   <a class="loft-deploy-hide-trigger" href="#"{$style}>
   {$title}
@@ -261,24 +258,24 @@ function loft_deploy_preprocess_html(&$vars)
   </div>
 EOD;
 
-        $vars['page']['page_bottom']['loft_deploy_border'] = array(
-            '#markup'   => $output,
-            '#attached' => array(
-                'css'     => array(
-                    drupal_get_path('module', 'loft_deploy') . '/loft_deploy.css',
-                ),
-                // This does NOT work for library_load()
-                'library' => array(
-                    array('system', 'cookie'),
-                ),
-            ),
-        );
+    $vars['page']['page_bottom']['loft_deploy_border'] = array(
+      '#markup' => $output,
+      '#attached' => array(
+        'css' => array(
+          drupal_get_path('module', 'loft_deploy') . '/loft_deploy.css',
+        ),
+        // This does NOT work for library_load()
+        'library' => array(
+          array('system', 'cookie'),
+        ),
+      ),
+    );
 
-        $vars['page']['page_bottom']['loft_deploy_border']['#attached']['js'][] = array(
-            'type'  => 'file',
-            'scope' => 'footer',
-            'group' => JS_THEME,
-            'data'  => drupal_get_path('module', 'loft_deploy') . '/loft_deploy.js',
-        );
-    }
+    $vars['page']['page_bottom']['loft_deploy_border']['#attached']['js'][] = array(
+      'type' => 'file',
+      'scope' => 'footer',
+      'group' => JS_THEME,
+      'data' => drupal_get_path('module', 'loft_deploy') . '/loft_deploy.js',
+    );
+  }
 }

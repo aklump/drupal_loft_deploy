@@ -27,7 +27,7 @@
 
         // Cookie handling
         var expiry = new Date(),
-            time   = expiry.getTime() + settings.loftDeploy.metaTimeout * 1000;
+          time = expiry.getTime() + settings.loftDeploy.metaTimeout * 1000;
         expiry.setTime(time);
 
         $.cookie('loft_deploy', 'hidden', {
