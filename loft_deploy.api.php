@@ -34,13 +34,6 @@ function hook_loft_deploy_title_post_alter(&$title) {
 }
 
 /**
- * Implements hook_loft_deploy_ip_alter().
- */
-function hook_loft_deploy_ip_alter(&$ip) {
-
-}
-
-/**
  * Implements hook_loft_deploy_site_role_alter().
  */
 function hook_loft_deploy_site_role_alter(&$site_role) {

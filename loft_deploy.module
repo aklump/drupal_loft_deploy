@@ -47,15 +47,23 @@ function loft_deploy_boot() {
 }
 
 /**
- * Get the site role as defined in settings.local.php
+ * Return the site role.
  *
  * @return string
+ *   One of 'prod', 'staging', 'dev'
  */
 function loft_deploy_site_role() {
-  $site_role = &drupal_static(__FUNCTION__, NULL);
-  if ($site_role === NULL) {
-    // Site role based on settings.local.php
-    if (!($site_role = variable_get('loft_deploy_site_role', NULL))
+  static $drupal_static_fast;
+  if (!isset($drupal_static_fast)) {
+    $drupal_static_fast['site_role'] = &drupal_static(__FUNCTION__, NULL);
+  }
+  $site_role = &$drupal_static_fast['site_role'];
+  if (!isset($site_role)) {
+    $site_role = LOFT_DEPLOY_SITE_ROLE_PROD;
+    if (defined('DRUPAL_ENV_ROLE')) {
+      $site_role = DRUPAL_ENV_ROLE;
+    }
+    elseif (!($site_role = variable_get('loft_deploy_site_role', NULL))
       && file_exists(DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php')
     ) {
       ob_start();
@@ -64,35 +72,10 @@ function loft_deploy_site_role() {
       $site_role = ob_get_contents();
       ob_end_clean();
     }
-    // The default needs to be prod, so we don't deface a website unknowningly
-    if (empty($site_role)) {
-      $site_role = LOFT_DEPLOY_SITE_ROLE_PROD;
-    }
     drupal_alter('loft_deploy_site_role', $site_role);
   }
 
   return $site_role;
-}
-
-/**
- * Return the ip of the server.
- *
- * @return string
- */
-function loft_deploy_ip() {
-  $ip = &drupal_static(__FUNCTION__, NULL);
-  if (!isset($ip)) {
-    $ip = trim($_SERVER['REMOTE_ADDR']);
-    if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)
-      && ($forwards = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']))
-    ) {
-      $ip = array_pop($forwards);
-    }
-    $ip = trim($ip);
-    drupal_alter('loft_deploy_ip', $ip);
-  }
-
-  return $ip;
 }
 
 /**
@@ -195,8 +178,8 @@ function loft_deploy_preprocess_html(&$vars) {
     ), 'setting');
 
     // Add in the ip class
-    if (($ip = loft_deploy_ip())) {
-      if ($ip === '127.0.0.1') {
+    if (($ip = ip_address())) {
+      if (in_array($ip, array('127.0.0.1', '::1'))) {
         $ip = 'localhost';
       }
       else {
