@@ -105,13 +105,19 @@ Info Title
    Click while holding down CMD or CTRL to hide it for 10 minutes. The
    duration of this can be controlled using settings.php, e.g.:
 // Define the number of seconds to disable the border when clicking the metakey.
-$conf['loft_deploy_meta_timeout'] = 600
+$config['loft_deploy.settings']['meta_timeout'] = 1200;
 
    You may alter the title that is displayed at the bottom of the screen
    by adding the following to settings.local.php or settings.php, where
    the token !site_role will print the site role. Other tokens are: !git
    and !gitflow.
-$conf['loft_deploy_site_title'] = '!site_role - !git > !gitflow'
+$config['loft_deploy.settings']['border_title'] = 'Title Override';
+
+  Troubleshooting Git
+
+   You may need to indicate the exact path to your Git binary, if so do
+   like this in settings.php.
+$settings['loft_deploy.git'] = "/some/path/to/git";
 
 Advanced Theming
 
@@ -119,13 +125,13 @@ Advanced Theming
 
    You may add additional css classes to .loft-deploy in
    settings.local.php, e.g.,
-$conf['loft_deploy_css_class'][] = 'my-cool-class';
+$settings['loft_deploy.css_classes'][] = 'my-special-class';
 
    You may explicitely set the border color like this:
-$conf['loft_deploy_border_color'] = '#BD8FDB'
+$settings['loft_deploy.border_color'] = 'red';
 
    You may explicitely set the text color like this:
-$conf['loft_deploy_title_color'] = '#fff'
+$settings['loft_deploy.title_color'] = 'green';
 
 Gotchas
 
@@ -136,7 +142,7 @@ Always Hide the Border
 
    Add the following to settings.local.php and the border will not show,
    ever, for any reason. Why would you do this? Not sure.
-$conf['loft_deploy_border'] = FALSE;
+$settings['loft_deploy.hide_border'] = false;
 
 References
 

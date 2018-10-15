@@ -12,7 +12,7 @@
   <div class="pager">
   <a href="index.html" class="prev index">&laquo;Index</a>
   <a href="index.html" class="index">Index</a>
-  <a href="_tasklist.html" class="next _tasklist">Tasklist&raquo;</a>
+  <a href="_tasklist.html" class="next _tasklist"> Tasklist&raquo;</a>
 </div>
 </header>
 
@@ -108,12 +108,19 @@ dev         feature     yellow
 <p>Click while holding down CMD or CTRL to hide it for 10 minutes.  The duration of this can be controlled using <em>settings.php</em>, e.g.:</p>
 
 <pre><code>// Define the number of seconds to disable the border when clicking the metakey.
-$conf['loft_deploy_meta_timeout'] = 600
+$config['loft_deploy.settings']['meta_timeout'] = 1200;
 </code></pre>
 
 <p>You may alter the title that is displayed at the bottom of the screen by adding the following to <em>settings.local.php</em> or <em>settings.php</em>, where the token <code>!site_role</code> will print the site role.  Other tokens are: <code>!git</code> and <code>!gitflow</code>.</p>
 
-<pre><code>$conf['loft_deploy_site_title'] = '!site_role - !git &gt; !gitflow'
+<pre><code>$config['loft_deploy.settings']['border_title'] = 'Title Override';
+</code></pre>
+
+<h3>Troubleshooting Git</h3>
+
+<p>You may need to indicate the exact path to your Git binary, if so do like this in <em>settings.php</em>.</p>
+
+<pre><code>$settings['loft_deploy.git'] = "/some/path/to/git";
 </code></pre>
 
 <h2>Advanced Theming</h2>
@@ -122,17 +129,17 @@ $conf['loft_deploy_meta_timeout'] = 600
 
 <p>You may add additional css classes to <code>.loft-deploy</code> in <em>settings.local.php</em>, e.g.,</p>
 
-<pre><code>$conf['loft_deploy_css_class'][] = 'my-cool-class';
+<pre><code>$settings['loft_deploy.css_classes'][] = 'my-special-class';
 </code></pre>
 
 <p>You may explicitely set the border color like this:</p>
 
-<pre><code>$conf['loft_deploy_border_color'] = '#BD8FDB'
+<pre><code>$settings['loft_deploy.border_color'] = 'red';
 </code></pre>
 
 <p>You may explicitely set the text color like this:</p>
 
-<pre><code>$conf['loft_deploy_title_color'] = '#fff'
+<pre><code>$settings['loft_deploy.title_color'] = 'green';
 </code></pre>
 
 <h2>Gotchas</h2>
@@ -145,7 +152,7 @@ $conf['loft_deploy_meta_timeout'] = 600
 
 <p>Add the following to <code>settings.local.php</code> and the border will not show, ever, for any reason.  Why would you do this? Not sure.</p>
 
-<pre><code>$conf['loft_deploy_border'] = FALSE;
+<pre><code>$settings['loft_deploy.hide_border'] = false;
 </code></pre>
 </section>
 
@@ -157,11 +164,11 @@ $conf['loft_deploy_meta_timeout'] = 600
   <div class="pager">
   <a href="index.html" class="prev index">&laquo;Index</a>
   <a href="index.html" class="index">Index</a>
-  <a href="_tasklist.html" class="next _tasklist">Tasklist&raquo;</a>
+  <a href="_tasklist.html" class="next _tasklist"> Tasklist&raquo;</a>
 </div>
   
   <div id="footer-legaleeze">
-    <p class="legaleeze center">Version: 1.0 &bull; Last Updated: Sun, 14 Oct 2018 18:08:03 -0700</p>
+    <p class="legaleeze center">Version: 8.x-1.7-rc2 &bull; Last Updated: Mon, 15 Oct 2018 09:52:24 -0700</p>
   </div>
 </footer>
 
