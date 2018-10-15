@@ -207,8 +207,8 @@ function loft_deploy_preprocess_html(&$vars) {
 
     $output .= <<<EOD
 <div{$wrapper_attributes}">
-  <a class="js-loft-deploy__hide" href="#"{$style}>
-  <span class="loft-deploy__title">{$title}</span>
+  <a class="js-loft-deploy__hide" href="#">
+  <span class="loft-deploy__title"{$style}>{$title}</span>
   </a>
   <!-- Borders. -->
   <div class="loft-deploy__border--n"{$style}></div>
