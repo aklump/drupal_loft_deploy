@@ -31,17 +31,9 @@
 
 <h2>Summary</h2>
 
-<p>This module helps visually distinguish dev, staging and production website roles by applying a colored border around non-production sites.  Additional visual feedback is provided including: the current git branch, and gitflow parent, when applicable.</p>
+<p>This module wraps non-production instances of your website in a colored border to indicate that you are elsewhere than production.  This helps me to keep track of where I am when switching from prod, staging and dev, where otherwise every site looks the same.  I've found the colors prevent me from making mistakes.</p>
 
-<p><strong>Visit <a href="https://aklump.github.io/loft_deploy">https://aklump.github.io/loft_deploy</a> for full documentation.</strong></p>
-
-<h2>Quick Start</h2>
-
-<h2>Requirements</h2>
-
-<ul>
-<li>Expecting to find <em>settings.local.php</em>.</li>
-</ul>
+<p><strong>Visit <a href="https://github.com/aklump/drupal_loft_deploy">https://github.com/aklump/drupal_loft_deploy</a> for full documentation.</strong></p>
 
 <h2>Contributing</h2>
 
@@ -56,41 +48,35 @@
 
 <h2>Configuration</h2>
 
-<p>This is not just a "dev module" as such, you should enable this module on production; though you won't see any visual changes to production it will insure that when you dump your prod database and import it to dev or staging, that the module is enabled and can begin to make the visual distinctions on the dev and staging sites. This module has no measurable affect on a production website as it's been highly optimized for speed.</p>
+<p>Unless defined as seen below, the site role is always <code>prod</code>. So, except in production environments, you must add either of the following to your <em>settings.local.php</em> file to indicate the site role for that environment.</p>
 
-<h3>How Is the Role Defined?</h3>
-
-<p>Unless defined, role is always <code>prod</code>. So, except in production environments, you must add either of the following to your <em>settings.local.php</em> file:</p>
+<h3>For local developement add</h3>
 
 <pre><code>!defined('DRUPAL_ENV_ROLE') &amp;&amp; define('DRUPAL_ENV_ROLE', 'dev');
-!defined('DRUPAL_ENV_ROLE') &amp;&amp; define('DRUPAL_ENV_ROLE', 'staging');
+</code></pre>
+
+<h3>For a staging site add</h3>
+
+<pre><code>!defined('DRUPAL_ENV_ROLE') &amp;&amp; define('DRUPAL_ENV_ROLE', 'staging');
 </code></pre>
 
 <p>Be aware that modules can alter this value using <code>loft_deploy_site_role_alter()</code>.</p>
 
-<h2>Site Role / Border Color</h2>
+<h3>Should I Enable on Production?</h3>
+
+<p>Yes, usually.</p>
+
+<p>If you keep this enabled on production, then you will not have to do anything when you copy your database to your local or staging environments.  If you do not keep it enabled, then you will have to remember to manually enable this module every time you sync your database.  This is not realistic.  Alternatively, you may automate the enabling of this module when your database is synced, but my vote is to just keep it enabled everywhere, since this is the simplest and most reliable.</p>
+
+<p>This module has no measurable affect on a production website as it's been highly optimized for speed, so that idea should not deter you.</p>
+
+<h3>Site Role / Border Color</h3>
 
 <ul>
 <li><p>Each instance of your website is one of: production, staging or dev. The color of the border around the non-production sites informs you as to it's role.  There's one more distinction between a site role dev with master branch, and a site role dev with a develop branch; this adds a fourth color.</p></li>
 <li><p>Obviously, production instances will not have a border.</p></li>
-<li><p>If using <em>settings.local.php</em> format, the $site_role variable will inform this module of the role of the site.</p></li>
-<li><p>If not you should add the following to <em>settings.php</em>; take note that adding the <code>$conf variable</code> as shown here will override what you have in settings.local.php, if in fact you have anything there.</p></li>
-<li><p>You will need to flush Drupal caches each time you change your site role.</p></li>
+<li><p>You will need to flush Drupal caches each time you change your site role in <em>settings.php</em>.</p></li>
 </ul>
-
-<h2>Determining Site Role</h2>
-
-<p>The site role will be taken by the first value found in the following cascade:</p>
-
-<pre><code>DRUPAL_ENV_ROLE
-variable_get('loft_deploy_site_role')
-</code></pre>
-
-<h2><em>settings.php</em> example</h2>
-
-<pre><code>// One of 'prod', 'staging', or 'dev'
-$conf['loft_deploy_site_role'] = 'staging';
-</code></pre>
 
 <h2>Default Colors</h2>
 
@@ -105,26 +91,28 @@ dev         feature     yellow
 
 <h2>Info Title</h2>
 
-<p>At the bottom of the page, you will see a readout of information, the "title". By default this will display the site role, and the gitflow parent and current git branch, if you are using git.</p>
+<p>At the bottom of the page, you will see a readout of information, the <em>title</em>. By default this will display the site role, and the gitflow parent and current git branch, if you are using git.</p>
 
-<p>Click this title to hide the visual border; CMD or CTRL click this to hide it for 10 minutes.  The duration of this can be controlled using <em>settings.php</em>, e.g.:</p>
+<p>Click this title to hide the visual border until next request.</p>
+
+<p>Click while holding down CMD or CTRL to hide it for 10 minutes.  The duration of this can be controlled using <em>settings.php</em>, e.g.:</p>
 
 <pre><code>// Define the number of seconds to disable the border when clicking the metakey.
 $conf['loft_deploy_meta_timeout'] = 600
 </code></pre>
 
-<p>You may alter the title that is displayed at the bottom of the screen by   adding the following to <em>settings.local.php</em> or <em>settings.php</em>, where the token '!site_role' will print the site role.  Other tokens are: !git and !gitflow.</p>
+<p>You may alter the title that is displayed at the bottom of the screen by adding the following to <em>settings.local.php</em> or <em>settings.php</em>, where the token <code>!site_role</code> will print the site role.  Other tokens are: <code>!git</code> and <code>!gitflow</code>.</p>
 
 <pre><code>$conf['loft_deploy_site_title'] = '!site_role - !git &gt; !gitflow'
 </code></pre>
 
 <h2>Advanced Theming</h2>
 
-<p>Refer to <code>div.loft-deploy</code> and it's classes for css overriding.</p>
+<p>Refer to <code>.loft-deploy</code> and it's classes for css overriding.</p>
 
-<p>You may influence the css classes on <code>div.loft-deploy</code> by adding, as an example:</p>
+<p>You may add additional css classes to <code>.loft-deploy</code> in <em>settings.local.php</em>, e.g.,</p>
 
-<pre><code>$conf['loft_deploy_css_class'] = 'my-cool-class';
+<pre><code>$conf['loft_deploy_css_class'][] = 'my-cool-class';
 </code></pre>
 
 <p>You may explicitely set the border color like this:</p>
@@ -143,9 +131,9 @@ $conf['loft_deploy_meta_timeout'] = 600
 <li>If your site role changes, you may need to empty all caches to see the changes appear.</li>
 </ul>
 
-<h2>Quick hide border always</h2>
+<h2>Always Hide the Border</h2>
 
-<p>Add the following to <code>settings.local.php</code> and the border will not show, ever, for any reason.</p>
+<p>Add the following to <code>settings.local.php</code> and the border will not show, ever, for any reason.  Why would you do this? Not sure.</p>
 
 <pre><code>$conf['loft_deploy_border'] = FALSE;
 </code></pre>
@@ -163,7 +151,7 @@ $conf['loft_deploy_meta_timeout'] = 600
 </div>
   
   <div id="footer-legaleeze">
-    <p class="legaleeze center">Version: 1.0 &bull; Last Updated: Sun, 14 Oct 2018 17:16:51 -0700</p>
+    <p class="legaleeze center">Version: 1.0 &bull; Last Updated: Sun, 14 Oct 2018 17:52:04 -0700</p>
   </div>
 </footer>
 
