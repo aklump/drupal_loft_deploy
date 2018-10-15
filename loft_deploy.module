@@ -9,29 +9,36 @@
  */
 
 /**
- * @var LOFT_DEPLOY_SITE_ROLE
- */
-define('LOFT_DEPLOY_SITE_ROLE', 'prod');
-
-/**
+ * Defines a prod environment.
+ *
  * @var LOFT_DEPLOY_SITE_ROLE_PROD
+ *
+ * @deprecated Use LoftDeployManager::ROLE_PROD
  */
-define('LOFT_DEPLOY_SITE_ROLE_PROD', 'prod');
+define('LOFT_DEPLOY_SITE_ROLE_PROD', LoftDeployManager::ROLE_PROD);
 
 /**
+ * Defines a staging environment.
+ *
  * @var LOFT_DEPLOY_SITE_ROLE_STAGING
+ *
+ * @deprecated Use LoftDeployManager::ROLE_STAGING
  */
-define('LOFT_DEPLOY_SITE_ROLE_STAGING', 'staging');
+define('LOFT_DEPLOY_SITE_ROLE_STAGING', LoftDeployManager::ROLE_STAGING);
 
 /**
+ * Defines a dev environment.
+ *
  * @var LOFT_DEPLOY_SITE_ROLE_DEV
+ *
+ * @deprecated Use LoftDeployManager::ROLE_DEV
  */
-define('LOFT_DEPLOY_SITE_ROLE_DEV', 'dev');
+define('LOFT_DEPLOY_SITE_ROLE_DEV', LoftDeployManager::ROLE_DEV);
 
 /**
  * Used to set the full path to the git binary.
  */
-define('LOFT_DEPLOY_WHICH_GIT', '/usr/bin/git');
+define('LOFT_DEPLOY_WHICH_GIT', 'git');
 
 /**
  * @var LOFT_DEPLOY_META_TIMEOUT
@@ -44,6 +51,22 @@ define('LOFT_DEPLOY_META_TIMEOUT', 600);
  * Register module to be available in boot_invocations.
  */
 function loft_deploy_boot() {
+  // Simply defined so it gets discovered by Drupal.  Keep here.
+}
+
+/**
+ * Return a service instance.
+ *
+ * @return \Drupal\loft_deploy\LoftDeployManager
+ *   A shared instance.
+ */
+function loft_deploy_manager() {
+  static $manager;
+  if (!isset($manager)) {
+    $manager = new \LoftDeployManager();
+  }
+
+  return $manager;
 }
 
 /**
@@ -51,100 +74,50 @@ function loft_deploy_boot() {
  *
  * @return string
  *   One of 'prod', 'staging', 'dev'
+ *
+ * @deprecated Use loft_deploy_manager()->getSiteRole().
  */
 function loft_deploy_site_role() {
-  static $drupal_static_fast;
-  if (!isset($drupal_static_fast)) {
-    $drupal_static_fast['site_role'] = &drupal_static(__FUNCTION__, NULL);
-  }
-  $site_role = &$drupal_static_fast['site_role'];
-  if (!isset($site_role)) {
-    $site_role = LOFT_DEPLOY_SITE_ROLE_PROD;
-    if (defined('DRUPAL_ENV_ROLE')) {
-      $site_role = DRUPAL_ENV_ROLE;
-    }
-    elseif (!($site_role = variable_get('loft_deploy_site_role', NULL))
-      && file_exists(DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php')
-    ) {
-      ob_start();
-      include DRUPAL_ROOT . '/' . conf_path() . '/settings.local.php';
-      echo $site_role;
-      $site_role = ob_get_contents();
-      ob_end_clean();
-    }
-    drupal_alter('loft_deploy_site_role', $site_role);
-  }
-
-  return $site_role;
+  return loft_deploy_manager()->getSiteRole();
 }
 
 /**
- * Get the site role as defined in settings.local.php
+ * Return the GIT branch.
+ *
+ * @deprecated Use loft_deploy_manager()->getGitBranch().
  */
 function loft_deploy_git_branch() {
-  $git_branch = &drupal_static(__FUNCTION__, NULL);
-  if ($git_branch === NULL) {
-    exec(variable_get('loft_deploy_which_git', LOFT_DEPLOY_WHICH_GIT) . ' status', $git);
-    $git = implode(PHP_EOL, $git);
-    if (preg_match('/On branch (.*)\s/i', $git, $found)
-      && !($git_branch = $found[1])
-    ) {
-      $git_branch = NULL;
-    }
-    drupal_alter('loft_deploy_git_branch', $git_branch);
-  }
-
-  return $git_branch;
+  return loft_deploy_manager()->getGitBranch();
 }
 
 /**
- * Get the title string after replacements
+ * Get the title string after replacements.
  *
  * DO NOT CACHE THIS OR IT WON'T RESPOND TO GIT CHANGES!
  *
  * @return string
+ *   The title to use.
+ *
+ * @deprecated Use loft_deploy_manager()->getBorderTitle().
  */
 function loft_deploy_get_title() {
-  $title = &drupal_static(__FUNCTION__, '');
-  if (empty($title)) {
-    // Set up the title template
-    $title = variable_get('loft_deploy_site_title', 'Role: !site_role ~ Branch: !git_branch');
-    drupal_alter('loft_deploy_title_pre', $title);
-
-    // Now start replacing tokens
-    $title = str_replace('!site_role', loft_deploy_site_role(), $title);
-
-    if ($git_branch = loft_deploy_git_branch()) {
-      $git_branch = strtolower($git_branch);
-      $title = str_replace('!git_branch', $git_branch, $title);
-      // Gitflow support
-      if (strpos($git_branch, 'master') === 0
-        || strpos($git_branch, 'hotfix') === 0
-      ) {
-        $title = str_replace('!gitflow', 'master', $title);
-      }
-      if (strpos($git_branch, 'develop') === 0
-        || strpos($git_branch, 'feature') === 0
-        || strpos($git_branch, 'release') === 0
-      ) {
-        $title = str_replace('!gitflow', 'develop', $title);
-      }
-    }
-    drupal_alter('loft_deploy_title_post', $title);
-  }
-
-  return $title;
+  return loft_deploy_manager()->getBorderTitle();
 }
 
 /**
  * Determine if the current user should see the border.
  *
  * @return bool
+ *   True if the current user should see the border.
  */
 function loft_deploy_border_access() {
-  $access = &drupal_static(__FUNCTION__, NULL);
-  if (!isset($access)) {
-    $access = ($site_role = loft_deploy_site_role()) !== LOFT_DEPLOY_SITE_ROLE_PROD
+  static $drupal_static_fast;
+  if (!isset($drupal_static_fast)) {
+    $drupal_static_fast['access'] = &drupal_static(__FUNCTION__, NULL);
+  }
+  $access = &$drupal_static_fast['access'];
+  if (is_null($access)) {
+    $access = ($site_role = loft_deploy_manager()->getSiteRole()) !== LoftDeployManager::ROLE_PROD
       && empty($_COOKIE['loft_deploy']);
     drupal_alter('loft_deploy_border_access', $access, $site_role, $_COOKIE['loft_deploy']);
   }
@@ -157,7 +130,8 @@ function loft_deploy_border_access() {
  */
 function loft_deploy_preprocess_html(&$vars) {
   if (loft_deploy_border_access()) {
-    $site_role = loft_deploy_site_role();
+    $ldm = loft_deploy_manager();
+    $site_role = loft_deploy_manager()->getSiteRole();
     $output = '';
 
     $wrapper_attributes = array(
@@ -170,14 +144,13 @@ function loft_deploy_preprocess_html(&$vars) {
       $wrapper_attributes['class'] = explode(' ', $css);
     }
 
-    // Send the JS settings
     drupal_add_js(array(
       'loftDeploy' => array(
         'metaTimeout' => variable_get('loft_deploy_meta_timeout', LOFT_DEPLOY_META_TIMEOUT),
       ),
     ), 'setting');
 
-    // Add in the ip class
+    // Add in css class for the IP.
     if (($ip = ip_address())) {
       if (in_array($ip, array('127.0.0.1', '::1'))) {
         $ip = 'localhost';
@@ -188,11 +161,11 @@ function loft_deploy_preprocess_html(&$vars) {
       $wrapper_attributes['class'][] = $ip;
     }
 
-    if ($git_branch = loft_deploy_git_branch()) {
+    if ($git_branch = $ldm->getGitBranch()) {
       $git_branch = strtolower($git_branch);
       $wrapper_attributes['class'][] = 'git-' . $git_branch;
 
-      // Gitflow support
+      // Gitflow support.
       if (strpos($git_branch, 'master') === 0
         || strpos($git_branch, 'hotfix') === 0
       ) {
@@ -223,21 +196,24 @@ function loft_deploy_preprocess_html(&$vars) {
     else {
       $style = '';
     }
+    array_walk($wrapper_attributes['class'], function ($item) {
+      return 'loft_deploy--' . $item;
+    });
 
     // Prepare vars for tpl.
     $wrapper_attributes = drupal_attributes($wrapper_attributes);
-    $title = loft_deploy_get_title();
+    $title = $ldm->getBorderTitle();
 
     $output .= <<<EOD
 <div{$wrapper_attributes}">
-  <a class="loft-deploy-hide-trigger" href="#"{$style}>
-  {$title}
+  <a class="js-loft-deploy__hide" href="#"{$style}>
+  <span class="loft-deploy__title">{$title}</span>
   </a>
   <!-- Borders. -->
-  <div class="border n"{$style}></div>
-  <div class="border e"{$style}></div>
-  <div class="border s"{$style}></div>
-  <div class="border w"{$style}></div>
+  <div class="loft-deploy__border--n"{$style}></div>
+  <div class="loft-deploy__border--e"{$style}></div>
+  <div class="loft-deploy__border--s"{$style}></div>
+  <div class="loft-deploy__border--w"{$style}></div>
   </div>
 EOD;
 
@@ -247,7 +223,6 @@ EOD;
         'css' => array(
           drupal_get_path('module', 'loft_deploy') . '/loft_deploy.css',
         ),
-        // This does NOT work for library_load()
         'library' => array(
           array('system', 'cookie'),
         ),
