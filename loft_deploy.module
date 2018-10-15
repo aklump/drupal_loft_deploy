@@ -15,7 +15,7 @@
  *
  * @deprecated Use LoftDeployManager::ROLE_PROD
  */
-define('LOFT_DEPLOY_SITE_ROLE_PROD', LoftDeployManager::ROLE_PROD);
+define('LOFT_DEPLOY_SITE_ROLE_PROD', 'prod');
 
 /**
  * Defines a staging environment.
@@ -24,7 +24,7 @@ define('LOFT_DEPLOY_SITE_ROLE_PROD', LoftDeployManager::ROLE_PROD);
  *
  * @deprecated Use LoftDeployManager::ROLE_STAGING
  */
-define('LOFT_DEPLOY_SITE_ROLE_STAGING', LoftDeployManager::ROLE_STAGING);
+define('LOFT_DEPLOY_SITE_ROLE_STAGING', 'staging');
 
 /**
  * Defines a dev environment.
@@ -33,7 +33,7 @@ define('LOFT_DEPLOY_SITE_ROLE_STAGING', LoftDeployManager::ROLE_STAGING);
  *
  * @deprecated Use LoftDeployManager::ROLE_DEV
  */
-define('LOFT_DEPLOY_SITE_ROLE_DEV', LoftDeployManager::ROLE_DEV);
+define('LOFT_DEPLOY_SITE_ROLE_DEV', 'dev');
 
 /**
  * Used to set the full path to the git binary.
