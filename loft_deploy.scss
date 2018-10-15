@@ -4,7 +4,7 @@
 $staging: #0f0;
 $text_on_staging: #000;
 
-// Color: staging.gitflow-feature* 
+// Color: staging.gitflow-feature*
 $staging_feature: #ff7f00;
 $text_on_staging_feature: #000;
 
@@ -18,82 +18,92 @@ $text_on_dev_master: #fff;
 $dev_develop: #0ff;
 $text_on_dev_develop: #000;
 
-// Color: dev.gitflow-feature* 
+// Color: dev.gitflow-feature*
 $dev_feature: #ffff0a;
 $text_on_dev_feature: #000;
 
-$border_width: 6px;
+$border_width: 12px;
+$offset: $border_width / -2;
 
-/**
- * Positioning
- */
-div.loft-deploy {
-  left: 0px;
+.loft-deploy__title {
   position: fixed;
-  right: 0px;
-  top: 0px;
-  z-index: 998; //admin menu is 999
-  div.border {
-    position: fixed;
-  }
-  a {
-    position: fixed;
-    font-size: 12px;
-    font-weight: bold;
-    right: 0;
-    text-align: right;
-    text-transform: uppercase;
-    bottom: 0;
-    width: auto;
-    z-index: 231;
-    padding: 3px 10px 3px;
-    border-top-left-radius: 15px;
-    -webkit-border-top-left-radius: 15px;
-    -moz-border-radius-topleft: 15px;
-  }
-  div.border.n {
-    height: $border_width;
-    left: 0px;
-    right: 0px;
-    top: 0px;
-  }
-  div.border.e {
-    bottom: 0px;
-    right: 0px;
-    top: 0px;
-    width: $border_width;
-  }
-  div.border.s {
-    bottom: 0px;
-    height: $border_width;
-    left: 0px;
-    right: 0px;
-  }
-  div.border.w {
-    bottom: 0px;
-    left: 0px;
-    top: 0px;
-    width: $border_width;
-  }
-  a:hover {
+  font-size: 12px;
+  font-weight: bold;
+  right: 0;
+  text-align: right;
+  text-transform: uppercase;
+  bottom: 0;
+  width: auto;
+  z-index: 231;
+  padding: 3px 10px 3px;
+  border-top-left-radius: 15px;
+  -webkit-border-top-left-radius: 15px;
+  -moz-border-radius-topleft: 15px;
+  &:hover {
     text-decoration: none;
   }
+}
+
+%border_base {
+  position: fixed;
+  filter: blur($border_width / 2);
+  pointer-events: none;
+}
+
+.loft-deploy__border--n {
+  @extend %border_base;
+  height: $border_width;
+  left: 0;
+  right: 0;
+  top: $offset;
+}
+
+.loft-deploy__border--e {
+  @extend %border_base;
+  bottom: 0;
+  right: $offset;
+  top: 0;
+  width: $border_width;
+}
+
+.loft-deploy__border--s {
+  @extend %border_base;
+  bottom: $offset;
+  height: $border_width;
+  left: 0;
+  right: 0;
+}
+
+.loft-deploy__border--w {
+  @extend %border_base;
+  bottom: 0;
+  left: $offset;
+  top: 0;
+  width: $border_width;
 }
 
 /**
  * Borders & Colors
  */
 @mixin borders-colors($color, $text_color) {
-  div.border {
+  .loft-deploy__border--n,
+  .loft-deploy__border--e,
+  .loft-deploy__border--s,
+  .loft-deploy__border--w {
     background-color: $color;
   }
-  a {
+  .loft-deploy__title {
     background-color: $color;
     color: $text_color;
   }
 }
 
-div.loft-deploy {
+.loft-deploy {
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: 998; //admin menu is 999
   @include borders_colors(#fff, #000);
 
   // Never shown on prod.
