@@ -7,7 +7,7 @@
  * @{
  */
 
-define('LOFT_DEPLOY_IP_FILTER', 'include');
+define('LOFT_DEPLOY_IP_FILTER', 'exclude');
 
 /**
  * Implements hook_loft_deploy_border_access().
@@ -32,6 +32,7 @@ function loft_deploy_ip_menu() {
   $items = array();
   $items['admin/config/development/loft-deploy'] = array(
     'title' => 'Loft Deploy Access',
+    'description' => 'Hide or show the border based on IP address(es).',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('loft_deploy_ip_admin_settings'),
     'access arguments' => array('loft_deploy_ip:administer'),

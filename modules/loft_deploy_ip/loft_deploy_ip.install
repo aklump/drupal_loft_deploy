@@ -1,0 +1,21 @@
+<?php
+/**
+ * @file
+ * Provides installation functions for the loft_deploy_ip module.
+ *
+ * @ingroup loft_deploy_ip
+ * @{
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function loft_deploy_ip_uninstall() {
+  $vars = db_select('variable', 'v')
+    ->fields('v', array('name'))
+    ->condition('name', 'loft_deploy_ip%', 'LIKE')
+    ->execute()->fetchCol();
+  foreach ($vars as $var) {
+    variable_del($var);
+  }
+}
