@@ -8,7 +8,7 @@ test -f "$7/docs/index.html" || exit 1
 
 ## Copy screenshot.
 test -d "$7/images" || mkdir -p "$7/images"
-cp "$7/documentation/source/images/screenshot.jpg" "$7/images/screenshot.jpg" || exit 1
+cp "$7/documentation/source/images/screenshot.png" "$7/images/screenshot.png" || exit 1
 
 ## Auto commit the files generated as output.
 git=$(type git >/dev/null 2>&1 && which git)
