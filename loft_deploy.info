@@ -2,8 +2,7 @@ name = Loft Deploy
 description = Deployment support by In the Loft Studios
 package = In the Loft Studios
 core = 7.x
-version = 7.x-1.6-rc22
+version = 7.x-1.6-rc23
 homepage = https://github.com/aklump/drupal_loft_deploy
 author = aklump
-
 files[] = src/LoftDeployManager.php
