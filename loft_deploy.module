@@ -9,9 +9,10 @@
  */
 
 use Drupal\Component\Utility\Html;
+use Drupal\Core\Render\Markup;
 use Drupal\Core\Template\Attribute;
 use Drupal\loft_deploy\LoftDeployManager;
-use Drupal\Core\Render\Markup;
+use Drupal\Core\Site\Settings;
 
 /**
  * Determine if the current user should see the border.
@@ -35,8 +36,7 @@ function loft_deploy_border_access() {
       ->alter('loft_deploy_border_access', $access, $site_role, $_COOKIE['loft_deploy']);
   }
 
-  return $access && \Drupal::config('loft_deploy.settings')
-      ->get('loft_deploy_border');
+  return $access && !Settings::get('loft_deploy.hide_border');
 }
 
 /**
@@ -54,8 +54,7 @@ function loft_deploy_preprocess_html(&$vars) {
         $site_role,
       ],
     ];
-    $custom_classes = \Drupal::config('loft_deploy.settings')
-      ->get('loft_deploy_css_class');
+    $custom_classes = Settings::get('loft_deploy.css_classes');
     $custom_classes = is_array($custom_classes) ? $custom_classes : explode(' ', $custom_classes);
     if (!empty($custom_classes)) {
       $wrapper_attributes['class'] = array_merge($wrapper_attributes['class'], $custom_classes);
@@ -94,12 +93,10 @@ function loft_deploy_preprocess_html(&$vars) {
 
     // Add in some styles based on color settings in $conf.
     $style = [];
-    if (($border_color = \Drupal::config('loft_deploy.settings')
-      ->get('loft_deploy_border_color'))) {
+    if (($border_color = Settings::get('loft_deploy.border_color'))) {
       $style[] = 'background-color: ' . Html::escape($border_color);
     }
-    if (($title_color = \Drupal::config('loft_deploy.settings')
-      ->get('loft_deploy_title_color'))) {
+    if (($title_color = Settings::get('loft_deploy.title_color'))) {
       $style[] = 'color: ' . Html::escape($title_color);
     }
     if ($style) {
@@ -136,6 +133,6 @@ EOD;
     ];
     $vars['page_bottom']['#attached']['library'][] = 'loft_deploy/visualizer';
     $vars['#attached']['drupalSettings']['loftDeploy']['metaTimeout'] = \Drupal::config('loft_deploy.settings')
-      ->get('loft_deploy_meta_timeout');
+      ->get('meta_timeout');
   }
 }

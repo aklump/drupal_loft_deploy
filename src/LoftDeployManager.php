@@ -1,6 +1,7 @@
 <?php
 
 namespace Drupal\loft_deploy;
+use Drupal\Core\Site\Settings;
 
 /**
  * A service class for Loft Deploy.
@@ -52,12 +53,7 @@ class LoftDeployManager {
   public function getGitBranch() {
     $git_branch = &drupal_static(__CLASS__ . '::' . __FUNCTION__, NULL);
     if ($git_branch === NULL) {
-      // @FIXME
-      // Could not extract the default value because it is either indeterminate, or
-      // not scalar. You'll need to provide a default value in
-      // config/install/loft_deploy.settings.yml and config/schema/loft_deploy.schema.yml.
-      $git = \Drupal::config('loft_deploy.settings')
-        ->get('loft_deploy_which_git');
+      $git = Settings::get('loft_deploy.git', 'git');
       $git_branch = exec('cd ' . \Drupal::root() . ' && ' . $git . ' rev-parse --abbrev-ref HEAD', $git);
       \Drupal::moduleHandler()->alter('loft_deploy_git_branch', $git_branch);
     }
@@ -79,7 +75,7 @@ class LoftDeployManager {
     $title = &$drupal_static_fast['title'];
     if (empty($title)) {
       $title = \Drupal::config('loft_deploy.settings')
-        ->get('loft_deploy_site_title');
+        ->get('border_title');
       \Drupal::moduleHandler()->alter('loft_deploy_title_pre', $title);
       $title = str_replace('!site_role', $this->getSiteRole(), $title);
       $git_branch = strtolower($this->getGitBranch());
