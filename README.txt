@@ -1,91 +1,135 @@
-##Summary
-This module helps visually distinguish dev, staging and production
-website roles by applying a colored border around non-production sites.
-Additional visual feedback is provided including: the current git branch, and gitflow parent, when applicable.
+                                  Loft Deploy
 
+   loft_deploy
 
-##Requirements
-* Expecting to find settings.local.php
+Summary
 
+   This module helps visually distinguish dev, staging and production
+   website roles by applying a colored border around non-production sites.
+   Additional visual feedback is provided including: the current git
+   branch, and gitflow parent, when applicable.
 
-##Installation
-* Download and unzip this module into your modules directory.
-* Goto Administer > Site Building > Modules and enable this module.
+   Visit [1]https://aklump.github.io/loft_deploy for full documentation.
 
+Quick Start
 
-##Configuration
-This is not just a "dev module" as such, you should enable this module on production; though you won't see any visual changes to production it will insure that when you dump your prod database and import it to dev or staging, that the module is enabled and can begin to make the visual distinctions on the dev and staging sites. This module has no measurable affect on a production website as it's been highly optimized for speed.
+Requirements
 
-##Site Role / Border Color
-* Each instance of your website is one of: production, staging or dev. The color of the border around the non-production sites informs you as to it's role.  There's one more distinction between a site role dev with master branch, and a site role dev with a develop branch; this adds a fourth color.
+     * Expecting to find settings.local.php.
 
-* Obviously, production instances will not have a border.
+Contributing
 
-* If using settings.local.php format, the $site_role variable will inform this module of the role of the site.
+   If you find this project useful... please consider [2]making a
+   donation.
 
-* If not you should add the following to settings.php; take note that adding the `$conf variable` as shown here will override what you have in settings.local.php, if in fact you have anything there.  
+Installation
 
-* You will need to flush Drupal caches each time you change your site role.
+    1. Download and unzip this module into your modules directory.
+    2. Goto Administer > Site Building > Modules and enable this module.
 
+Configuration
 
-##settings.php example
-    
-    // One of 'prod', 'staging', or 'dev'
-    $conf['loft_deploy_site_role'] = 'staging';
+   This is not just a "dev module" as such, you should enable this module
+   on production; though you won't see any visual changes to production it
+   will insure that when you dump your prod database and import it to dev
+   or staging, that the module is enabled and can begin to make the visual
+   distinctions on the dev and staging sites. This module has no
+   measurable affect on a production website as it's been highly optimized
+   for speed.
 
-##Default Colors
+  How Is the Role Defined?
 
-    SITE ROLE - GIT BRANCH - COLOR
-    prod        n/a         n/a
-    staging     n/a         green
-    staging     feature     orange
-    dev         master      pink
-    dev         develop     aqua
-    dev         feature     yellow
+   Unless defined, role is always prod. So, except in production
+   environments, you must add either of the following to your
+   settings.local.php file:
+!defined('DRUPAL_ENV_ROLE') && define('DRUPAL_ENV_ROLE', 'dev');
+!defined('DRUPAL_ENV_ROLE') && define('DRUPAL_ENV_ROLE', 'staging');
 
-##Info Title
-At the bottom of the page, you will see a readout of information, the "title". By default this will display the site role, and the gitflow parent and current git branch, if you are using git.
+   Be aware that modules can alter this value using
+   loft_deploy_site_role_alter().
 
-Click this title to hide the visual border; CMD or CTRL click this to hide it for 10 minutes.  The duration of this can be controlled using settings.php, e.g.:
+Site Role / Border Color
 
-    // Define the number of seconds to disable the border when clicking the metakey.
-    $conf['loft_deploy_meta_timeout'] = 600
+     * Each instance of your website is one of: production, staging or
+       dev. The color of the border around the non-production sites
+       informs you as to it's role. There's one more distinction between a
+       site role dev with master branch, and a site role dev with a
+       develop branch; this adds a fourth color.
+     * Obviously, production instances will not have a border.
+     * If using settings.local.php format, the $site_role variable will
+       inform this module of the role of the site.
+     * If not you should add the following to settings.php; take note that
+       adding the $conf variable as shown here will override what you have
+       in settings.local.php, if in fact you have anything there.
+     * You will need to flush Drupal caches each time you change your site
+       role.
 
-You may alter the title that is displayed at the bottom of the screen by   adding the following to settings.local.php or settings.php, where the token '!site_role' will print the site role.  Other tokens are: !git and !gitflow.
-       
+Determining Site Role
 
-    $conf['loft_deploy_site_title'] = '!site_role - !git > !gitflow'
+   The site role will be taken by the first value found in the following
+   cascade:
+DRUPAL_ENV_ROLE
+variable_get('loft_deploy_site_role')
 
+settings.php example
 
-##Advanced Theming
-Refer to `div.loft-deploy` and it's classes for css overriding.
+// One of 'prod', 'staging', or 'dev'
+$conf['loft_deploy_site_role'] = 'staging';
 
-You may influence the css classes on `div.loft-deploy` by adding, as an example:
+Default Colors
 
-    $conf['loft_deploy_css_class'] = 'my-cool-class';
+SITE ROLE - GIT BRANCH - COLOR
+prod        n/a         n/a
+staging     n/a         green
+staging     feature     orange
+dev         master      pink
+dev         develop     aqua
+dev         feature     yellow
 
-You may explicitely set the border color like this:
+Info Title
 
-    $conf['loft_deploy_border_color'] = '#BD8FDB'
+   At the bottom of the page, you will see a readout of information, the
+   "title". By default this will display the site role, and the gitflow
+   parent and current git branch, if you are using git.
 
-You may explicitely set the text color like this:
+   Click this title to hide the visual border; CMD or CTRL click this to
+   hide it for 10 minutes. The duration of this can be controlled using
+   settings.php, e.g.:
+// Define the number of seconds to disable the border when clicking the metakey.
+$conf['loft_deploy_meta_timeout'] = 600
 
-    $conf['loft_deploy_title_color'] = '#fff'
+   You may alter the title that is displayed at the bottom of the screen
+   by adding the following to settings.local.php or settings.php, where
+   the token '!site_role' will print the site role. Other tokens are: !git
+   and !gitflow.
+$conf['loft_deploy_site_title'] = '!site_role - !git > !gitflow'
 
-##Gotchas
-* If your site role changes, you may need to empty all caches to see the changes appear.
+Advanced Theming
 
+   Refer to div.loft-deploy and it's classes for css overriding.
 
-## Quick hide border always
+   You may influence the css classes on div.loft-deploy by adding, as an
+   example:
+$conf['loft_deploy_css_class'] = 'my-cool-class';
 
-Add the following to `settings.local.php` and the border will not show, ever, for any reason.
+   You may explicitely set the border color like this:
+$conf['loft_deploy_border_color'] = '#BD8FDB'
 
-    $conf['loft_deploy_border'] = false;
+   You may explicitely set the text color like this:
+$conf['loft_deploy_title_color'] = '#fff'
 
-##Contact
-In the Loft Studios  
-Aaron Klump - Web Developer  
-PO Box 29294 Bellingham, WA 98228-1294  
-aim: theloft101  
-skype: intheloftstudios  
-<http://www.InTheLoftStudios.com>
+Gotchas
+
+     * If your site role changes, you may need to empty all caches to see
+       the changes appear.
+
+Quick hide border always
+
+   Add the following to settings.local.php and the border will not show,
+   ever, for any reason.
+$conf['loft_deploy_border'] = FALSE;
+
+References
+
+   1. https://aklump.github.io/loft_deploy
+   2. https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4E5KZHDQCEUV8&item_name=Gratitude%20for%20aklump%2Floft_deploy

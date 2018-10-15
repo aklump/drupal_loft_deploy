@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Loft Deploy</title>
+  <link href="search/tipuesearch.css" rel="stylesheet">
+  <link href="style.css" rel="stylesheet">
+</head>
+
+<body class="page--readme">
+<header>
+  <div class="pager">
+  <a href="index.html" class="prev index">&laquo;Index</a>
+  <a href="index.html" class="index">Index</a>
+  <a href="_tasklist.html" class="next _tasklist">Tasklist&raquo;</a>
+</div>
+</header>
+
+  <div class="search__wrapper">
+  <form action="search--results.html">
+    <input type="text" class="search-input" name="q" id="tipue_search_input" autocomplete="off" required>
+  </form>
+</div>
+
+  <h1>Loft Deploy</h1>
+  <div class="breadcrumb"><a href="index.html">Index</a></div>
+
+<section>
+
+<p><img src="images/screenshot.png" alt="loft_deploy" /></p>
+
+<h2>Summary</h2>
+
+<p>This module helps visually distinguish dev, staging and production website roles by applying a colored border around non-production sites.  Additional visual feedback is provided including: the current git branch, and gitflow parent, when applicable.</p>
+
+<p><strong>Visit <a href="https://aklump.github.io/loft_deploy">https://aklump.github.io/loft_deploy</a> for full documentation.</strong></p>
+
+<h2>Quick Start</h2>
+
+<h2>Requirements</h2>
+
+<ul>
+<li>Expecting to find <em>settings.local.php</em>.</li>
+</ul>
+
+<h2>Contributing</h2>
+
+<p>If you find this project useful... please consider <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=4E5KZHDQCEUV8&amp;item_name=Gratitude%20for%20aklump%2Floft_deploy">making a donation</a>.</p>
+
+<h2>Installation</h2>
+
+<ol>
+<li>Download and unzip this module into your modules directory.</li>
+<li>Goto Administer > Site Building > Modules and enable this module.</li>
+</ol>
+
+<h2>Configuration</h2>
+
+<p>This is not just a "dev module" as such, you should enable this module on production; though you won't see any visual changes to production it will insure that when you dump your prod database and import it to dev or staging, that the module is enabled and can begin to make the visual distinctions on the dev and staging sites. This module has no measurable affect on a production website as it's been highly optimized for speed.</p>
+
+<h3>How Is the Role Defined?</h3>
+
+<p>Unless defined, role is always <code>prod</code>. So, except in production environments, you must add either of the following to your <em>settings.local.php</em> file:</p>
+
+<pre><code>!defined('DRUPAL_ENV_ROLE') &amp;&amp; define('DRUPAL_ENV_ROLE', 'dev');
+!defined('DRUPAL_ENV_ROLE') &amp;&amp; define('DRUPAL_ENV_ROLE', 'staging');
+</code></pre>
+
+<p>Be aware that modules can alter this value using <code>loft_deploy_site_role_alter()</code>.</p>
+
+<h2>Site Role / Border Color</h2>
+
+<ul>
+<li><p>Each instance of your website is one of: production, staging or dev. The color of the border around the non-production sites informs you as to it's role.  There's one more distinction between a site role dev with master branch, and a site role dev with a develop branch; this adds a fourth color.</p></li>
+<li><p>Obviously, production instances will not have a border.</p></li>
+<li><p>If using <em>settings.local.php</em> format, the $site_role variable will inform this module of the role of the site.</p></li>
+<li><p>If not you should add the following to <em>settings.php</em>; take note that adding the <code>$conf variable</code> as shown here will override what you have in settings.local.php, if in fact you have anything there.</p></li>
+<li><p>You will need to flush Drupal caches each time you change your site role.</p></li>
+</ul>
+
+<h2>Determining Site Role</h2>
+
+<p>The site role will be taken by the first value found in the following cascade:</p>
+
+<pre><code>DRUPAL_ENV_ROLE
+variable_get('loft_deploy_site_role')
+</code></pre>
+
+<h2><em>settings.php</em> example</h2>
+
+<pre><code>// One of 'prod', 'staging', or 'dev'
+$conf['loft_deploy_site_role'] = 'staging';
+</code></pre>
+
+<h2>Default Colors</h2>
+
+<pre><code>SITE ROLE - GIT BRANCH - COLOR
+prod        n/a         n/a
+staging     n/a         green
+staging     feature     orange
+dev         master      pink
+dev         develop     aqua
+dev         feature     yellow
+</code></pre>
+
+<h2>Info Title</h2>
+
+<p>At the bottom of the page, you will see a readout of information, the "title". By default this will display the site role, and the gitflow parent and current git branch, if you are using git.</p>
+
+<p>Click this title to hide the visual border; CMD or CTRL click this to hide it for 10 minutes.  The duration of this can be controlled using <em>settings.php</em>, e.g.:</p>
+
+<pre><code>// Define the number of seconds to disable the border when clicking the metakey.
+$conf['loft_deploy_meta_timeout'] = 600
+</code></pre>
+
+<p>You may alter the title that is displayed at the bottom of the screen by   adding the following to <em>settings.local.php</em> or <em>settings.php</em>, where the token '!site_role' will print the site role.  Other tokens are: !git and !gitflow.</p>
+
+<pre><code>$conf['loft_deploy_site_title'] = '!site_role - !git &gt; !gitflow'
+</code></pre>
+
+<h2>Advanced Theming</h2>
+
+<p>Refer to <code>div.loft-deploy</code> and it's classes for css overriding.</p>
+
+<p>You may influence the css classes on <code>div.loft-deploy</code> by adding, as an example:</p>
+
+<pre><code>$conf['loft_deploy_css_class'] = 'my-cool-class';
+</code></pre>
+
+<p>You may explicitely set the border color like this:</p>
+
+<pre><code>$conf['loft_deploy_border_color'] = '#BD8FDB'
+</code></pre>
+
+<p>You may explicitely set the text color like this:</p>
+
+<pre><code>$conf['loft_deploy_title_color'] = '#fff'
+</code></pre>
+
+<h2>Gotchas</h2>
+
+<ul>
+<li>If your site role changes, you may need to empty all caches to see the changes appear.</li>
+</ul>
+
+<h2>Quick hide border always</h2>
+
+<p>Add the following to <code>settings.local.php</code> and the border will not show, ever, for any reason.</p>
+
+<pre><code>$conf['loft_deploy_border'] = FALSE;
+</code></pre>
+</section>
+
+<div class="search__results">
+  <div id="tipue_search_content"></div>
+</div>
+
+<footer>
+  <div class="pager">
+  <a href="index.html" class="prev index">&laquo;Index</a>
+  <a href="index.html" class="index">Index</a>
+  <a href="_tasklist.html" class="next _tasklist">Tasklist&raquo;</a>
+</div>
+  
+  <div id="footer-legaleeze">
+    <p class="legaleeze center">Version: 1.0 &bull; Last Updated: Sun, 14 Oct 2018 17:00:45 -0700</p>
+  </div>
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script src="search/tipuesearch_content.js"></script>
+  <script src="search/tipuesearch_set.js"></script>
+  <script src="search/tipuesearch.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('#tipue_search_input').tipuesearch();
+    });
+  </script>
+<script src="js/core.js"></script>
+</body>
+</html>
+
