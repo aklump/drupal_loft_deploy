@@ -62,6 +62,16 @@
 
 <p>Be aware that modules can alter this value using <code>loft_deploy_site_role_alter()</code>.</p>
 
+<h3>Can I restrict the border by IP?</h3>
+
+<p>Yes.</p>
+
+<p>Let's say you are using this on a staging site and several people are looking at it, not all of whom appreciate the colored border as much as you do.  Well, you can enable the included loft_deploy_ip submodule and you can hide or show based on an IP list at <em>/admin/config/development/loft-deploy</em>.</p>
+
+<p>For the scenario mentioned, here's how I would configure it, where <code>XX.XX.XXX.XX</code> is my public IP address.  This way I will always see the staging border, but my clients don't have to be bothered by it.</p>
+
+<p><img src="images/by-ip.png" alt="IP access" /></p>
+
 <h3>Should I Enable on Production?</h3>
 
 <p>Yes, usually.</p>
@@ -151,7 +161,7 @@ $conf['loft_deploy_meta_timeout'] = 600
 </div>
   
   <div id="footer-legaleeze">
-    <p class="legaleeze center">Version: 1.0 &bull; Last Updated: Sun, 14 Oct 2018 17:55:03 -0700</p>
+    <p class="legaleeze center">Version: 1.0 &bull; Last Updated: Sun, 14 Oct 2018 18:04:43 -0700</p>
   </div>
 </footer>
 

@@ -30,6 +30,15 @@ Unless defined as seen below, the site role is always `prod`. So, except in prod
 
 Be aware that modules can alter this value using `loft_deploy_site_role_alter()`.
 
+### Can I restrict the border by IP?
+
+Yes.
+
+Let's say you are using this on a staging site and several people are looking at it, not all of whom appreciate the colored border as much as you do.  Well, you can enable the included loft_deploy_ip submodule and you can hide or show based on an IP list at _/admin/config/development/loft-deploy_.
+
+For the scenario mentioned, here's how I would configure it, where `XX.XX.XXX.XX` is my public IP address.  This way I will always see the staging border, but my clients don't have to be bothered by it.
+
+![IP access](images/by-ip.png)
 ### Should I Enable on Production?
 
 Yes, usually.
