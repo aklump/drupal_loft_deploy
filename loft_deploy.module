@@ -140,10 +140,11 @@ function loft_deploy_preprocess_html(&$vars) {
         $site_role,
       ),
     );
-    if ($css = trim(variable_get('loft_deploy_css_class', ''))) {
-      $wrapper_attributes['class'] = explode(' ', $css);
+    $custom_classes = variable_get('loft_deploy_css_class', []);
+    $custom_classes = is_array($custom_classes) ? $custom_classes : explode(' ', $custom_classes);
+    if (!empty($custom_classes)) {
+      $wrapper_attributes['class'] = array_merge($wrapper_attributes['class'], $custom_classes);
     }
-
     drupal_add_js(array(
       'loftDeploy' => array(
         'metaTimeout' => variable_get('loft_deploy_meta_timeout', LOFT_DEPLOY_META_TIMEOUT),
