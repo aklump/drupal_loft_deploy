@@ -12,7 +12,7 @@
     if (!settings.loftDeploy) {
       return;
     }
-    var $toggle = $('.loft-deploy .loft-deploy-hide-trigger');
+    var $toggle = $('.loft-deploy .js-loft-deploy__hide');
 
     // Single click hides until next page load
     $toggle.once().click(function (e) {
