@@ -8,107 +8,18 @@
  * @{
  */
 
-/**
- * Defines a prod environment.
- *
- * @var LOFT_DEPLOY_SITE_ROLE_PROD
- *
- * @deprecated Use LoftDeployManager::ROLE_PROD
- */
-define('LOFT_DEPLOY_SITE_ROLE_PROD', 'prod');
-
-/**
- * Defines a staging environment.
- *
- * @var LOFT_DEPLOY_SITE_ROLE_STAGING
- *
- * @deprecated Use LoftDeployManager::ROLE_STAGING
- */
-define('LOFT_DEPLOY_SITE_ROLE_STAGING', 'staging');
-
-/**
- * Defines a dev environment.
- *
- * @var LOFT_DEPLOY_SITE_ROLE_DEV
- *
- * @deprecated Use LoftDeployManager::ROLE_DEV
- */
-define('LOFT_DEPLOY_SITE_ROLE_DEV', 'dev');
-
-/**
- * Used to set the full path to the git binary.
- */
-define('LOFT_DEPLOY_WHICH_GIT', 'git');
-
-/**
- * @var LOFT_DEPLOY_META_TIMEOUT
- *
- * Default number of seconds for the meta key timeout.
- */
-define('LOFT_DEPLOY_META_TIMEOUT', 600);
-
-/**
- * Register module to be available in boot_invocations.
- */
-function loft_deploy_boot() {
-  // Simply defined so it gets discovered by Drupal.  Keep here.
-}
-
-/**
- * Return a service instance.
- *
- * @return \Drupal\loft_deploy\LoftDeployManager
- *   A shared instance.
- */
-function loft_deploy_manager() {
-  static $manager;
-  if (!isset($manager)) {
-    $manager = new \LoftDeployManager();
-  }
-
-  return $manager;
-}
-
-/**
- * Return the site role.
- *
- * @return string
- *   One of 'prod', 'staging', 'dev'
- *
- * @deprecated Use loft_deploy_manager()->getSiteRole().
- */
-function loft_deploy_site_role() {
-  return loft_deploy_manager()->getSiteRole();
-}
-
-/**
- * Return the GIT branch.
- *
- * @deprecated Use loft_deploy_manager()->getGitBranch().
- */
-function loft_deploy_git_branch() {
-  return loft_deploy_manager()->getGitBranch();
-}
-
-/**
- * Get the title string after replacements.
- *
- * DO NOT CACHE THIS OR IT WON'T RESPOND TO GIT CHANGES!
- *
- * @return string
- *   The title to use.
- *
- * @deprecated Use loft_deploy_manager()->getBorderTitle().
- */
-function loft_deploy_get_title() {
-  return loft_deploy_manager()->getBorderTitle();
-}
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Template\Attribute;
+use Drupal\loft_deploy\LoftDeployManager;
+use Drupal\Core\Render\Markup;
 
 /**
  * Determine if the current user should see the border.
  *
  * @return bool
  *   True if the current user should see the border.
+ *
+ * // TODO Use the Access mechanism here.
  */
 function loft_deploy_border_access() {
   static $drupal_static_fast;
@@ -117,12 +28,15 @@ function loft_deploy_border_access() {
   }
   $access = &$drupal_static_fast['access'];
   if (is_null($access)) {
-    $access = ($site_role = loft_deploy_manager()->getSiteRole()) !== LoftDeployManager::ROLE_PROD
+    $access = ($site_role = \Drupal::service('loft_deploy.manager')
+        ->getSiteRole()) !== LoftDeployManager::ROLE_PROD
       && empty($_COOKIE['loft_deploy']);
-    drupal_alter('loft_deploy_border_access', $access, $site_role, $_COOKIE['loft_deploy']);
+    \Drupal::moduleHandler()
+      ->alter('loft_deploy_border_access', $access, $site_role, $_COOKIE['loft_deploy']);
   }
 
-  return $access && variable_get('loft_deploy_border', TRUE);
+  return $access && \Drupal::config('loft_deploy.settings')
+      ->get('loft_deploy_border');
 }
 
 /**
@@ -130,30 +44,26 @@ function loft_deploy_border_access() {
  */
 function loft_deploy_preprocess_html(&$vars) {
   if (loft_deploy_border_access()) {
-    $ldm = loft_deploy_manager();
-    $site_role = loft_deploy_manager()->getSiteRole();
+    $ldm = \Drupal::service('loft_deploy.manager');
+    $site_role = $ldm->getSiteRole();
     $output = '';
 
-    $wrapper_attributes = array(
-      'class' => array(
+    $wrapper_attributes = [
+      'class' => [
         'loft-deploy',
         $site_role,
-      ),
-    );
-    $custom_classes = variable_get('loft_deploy_css_class', []);
+      ],
+    ];
+    $custom_classes = \Drupal::config('loft_deploy.settings')
+      ->get('loft_deploy_css_class');
     $custom_classes = is_array($custom_classes) ? $custom_classes : explode(' ', $custom_classes);
     if (!empty($custom_classes)) {
       $wrapper_attributes['class'] = array_merge($wrapper_attributes['class'], $custom_classes);
     }
-    drupal_add_js(array(
-      'loftDeploy' => array(
-        'metaTimeout' => variable_get('loft_deploy_meta_timeout', LOFT_DEPLOY_META_TIMEOUT),
-      ),
-    ), 'setting');
 
     // Add in css class for the IP.
-    if (($ip = ip_address())) {
-      if (in_array($ip, array('127.0.0.1', '::1'))) {
+    if (($ip = \Drupal::request()->getClientIp())) {
+      if (in_array($ip, ['127.0.0.1', '::1'])) {
         $ip = 'localhost';
       }
       else {
@@ -183,16 +93,19 @@ function loft_deploy_preprocess_html(&$vars) {
     }
 
     // Add in some styles based on color settings in $conf.
-    $style = array();
-    if (($border_color = variable_get('loft_deploy_border_color', NULL))) {
-      $style[] = 'background-color: ' . check_plain($border_color);
+    $style = [];
+    if (($border_color = \Drupal::config('loft_deploy.settings')
+      ->get('loft_deploy_border_color'))) {
+      $style[] = 'background-color: ' . Html::escape($border_color);
     }
-    if (($title_color = variable_get('loft_deploy_title_color', NULL))) {
-      $style[] = 'color: ' . check_plain($title_color);
+    if (($title_color = \Drupal::config('loft_deploy.settings')
+      ->get('loft_deploy_title_color'))) {
+      $style[] = 'color: ' . Html::escape($title_color);
     }
     if ($style) {
       $style = implode('; ', $style);
-      $style = drupal_attributes(array('style' => $style));
+      $wrapper_attributes['style'] = $style;
+      $style = " style=\"$style\"";
     }
     else {
       $style = '';
@@ -202,13 +115,13 @@ function loft_deploy_preprocess_html(&$vars) {
     });
 
     // Prepare vars for tpl.
-    $wrapper_attributes = drupal_attributes($wrapper_attributes);
+    $wrapper_attributes = new Attribute($wrapper_attributes);
     $title = $ldm->getBorderTitle();
 
     $output .= <<<EOD
-<div{$wrapper_attributes}">
-  <a class="js-loft-deploy__hide" href="#"{$style}>
-  <span class="loft-deploy__title">{$title}</span>
+<div{$wrapper_attributes}>
+  <a class="js-loft-deploy__hide" href="#">
+  <span class="loft-deploy__title"{$style}>{$title}</span>
   </a>
   <!-- Borders. -->
   <div class="loft-deploy__border--n"{$style}></div>
@@ -218,23 +131,11 @@ function loft_deploy_preprocess_html(&$vars) {
   </div>
 EOD;
 
-    $vars['page']['page_bottom']['loft_deploy_border'] = array(
-      '#markup' => $output,
-      '#attached' => array(
-        'css' => array(
-          drupal_get_path('module', 'loft_deploy') . '/loft_deploy.css',
-        ),
-        'library' => array(
-          array('system', 'cookie'),
-        ),
-      ),
-    );
-
-    $vars['page']['page_bottom']['loft_deploy_border']['#attached']['js'][] = array(
-      'type' => 'file',
-      'scope' => 'footer',
-      'group' => JS_THEME,
-      'data' => drupal_get_path('module', 'loft_deploy') . '/loft_deploy.js',
-    );
+    $vars['page_bottom']['loft_deploy'] = [
+      '#markup' => Markup::create($output),
+    ];
+    $vars['page_bottom']['#attached']['library'][] = 'loft_deploy/visualizer';
+    $vars['#attached']['drupalSettings']['loftDeploy']['metaTimeout'] = \Drupal::config('loft_deploy.settings')
+      ->get('loft_deploy_meta_timeout');
   }
 }

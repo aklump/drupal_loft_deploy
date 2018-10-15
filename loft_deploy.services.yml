@@ -1,0 +1,7 @@
+services:
+  boot_subscriber:
+    class: Drupal\loft_deploy\EventSubscriber\BootSubscriber
+    tags:
+    - name: event_subscriber
+  loft_deploy.manager:
+    class: Drupal\loft_deploy\LoftDeployManager

@@ -1,0 +1,6 @@
+loft_deploy_border: true
+loft_deploy_border_color: null
+loft_deploy_title_color: null
+loft_deploy_site_title: "Role: !site_role ~ Branch: !git_branch"
+loft_deploy_css_class: []
+loft_deploy_meta_timeout: 600

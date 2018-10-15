@@ -1,9 +1,0 @@
-name = Loft Deploy IP Access Control
-description = Hide/Show the borders by IP
-package = Other
-core = 7.x
-version = VERSION
-
-dependencies[] = loft_deploy
-
-configure = admin/config/development/loft-deploy

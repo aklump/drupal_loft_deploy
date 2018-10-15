@@ -1,0 +1,5 @@
+loft_deploy_ip.admin_settings:
+  route_name: loft_deploy_ip.admin_settings
+  title: 'Loft Deploy Access'
+  description: 'Hide or show the border based on IP address(es).'
+  parent: system.admin_config_development

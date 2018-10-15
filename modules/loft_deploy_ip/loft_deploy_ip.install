@@ -11,11 +11,18 @@
  * Implements hook_uninstall().
  */
 function loft_deploy_ip_uninstall() {
-  $vars = db_select('variable', 'v')
-    ->fields('v', array('name'))
-    ->condition('name', 'loft_deploy_ip%', 'LIKE')
-    ->execute()->fetchCol();
+  // @FIXME
+// $vars = db_select('variable', 'v')
+//     ->fields('v', array('name'))
+//     ->condition('name', 'loft_deploy_ip%', 'LIKE')
+//     ->execute()->fetchCol();
+
   foreach ($vars as $var) {
-    variable_del($var);
+    // @FIXME
+// // @FIXME
+// // The correct configuration object could not be determined. You'll need to
+// // rewrite this call manually.
+// variable_del($var);
+
   }
 }

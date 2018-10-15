@@ -1,5 +1,7 @@
 <?php
 
+namespace Drupal\loft_deploy;
+
 /**
  * A service class for Loft Deploy.
  */
@@ -10,13 +12,6 @@ class LoftDeployManager {
   const ROLE_STAGING = 'staging';
 
   const ROLE_DEV = 'dev';
-
-  /**
-   * The default title string.
-   *
-   * @var string
-   */
-  const TITLE = 'Role: !site_role ~ Branch: !git_branch';
 
   /**
    * Return the site role.
@@ -35,12 +30,12 @@ class LoftDeployManager {
       if (defined('DRUPAL_ENV_ROLE')) {
         $site_role = DRUPAL_ENV_ROLE;
       }
-      drupal_alter('loft_deploy_site_role', $site_role);
-      if (!in_array($site_role, array(
+      \Drupal::moduleHandler()->alter('loft_deploy_site_role', $site_role);
+      if (!in_array($site_role, [
         self::ROLE_PROD,
         self::ROLE_STAGING,
         self::ROLE_DEV,
-      ))) {
+      ])) {
         $site_role = self::ROLE_PROD;
       }
     }
@@ -57,9 +52,14 @@ class LoftDeployManager {
   public function getGitBranch() {
     $git_branch = &drupal_static(__CLASS__ . '::' . __FUNCTION__, NULL);
     if ($git_branch === NULL) {
-      $git = variable_get('loft_deploy_which_git', LOFT_DEPLOY_WHICH_GIT);
-      $git_branch = exec('cd ' . DRUPAL_ROOT . ' && ' . $git . ' rev-parse --abbrev-ref HEAD', $git);
-      drupal_alter('loft_deploy_git_branch', $git_branch);
+      // @FIXME
+      // Could not extract the default value because it is either indeterminate, or
+      // not scalar. You'll need to provide a default value in
+      // config/install/loft_deploy.settings.yml and config/schema/loft_deploy.schema.yml.
+      $git = \Drupal::config('loft_deploy.settings')
+        ->get('loft_deploy_which_git');
+      $git_branch = exec('cd ' . \Drupal::root() . ' && ' . $git . ' rev-parse --abbrev-ref HEAD', $git);
+      \Drupal::moduleHandler()->alter('loft_deploy_git_branch', $git_branch);
     }
 
     return $git_branch;
@@ -78,9 +78,9 @@ class LoftDeployManager {
     }
     $title = &$drupal_static_fast['title'];
     if (empty($title)) {
-
-      $title = variable_get('loft_deploy_site_title', self::TITLE);
-      drupal_alter('loft_deploy_title_pre', $title);
+      $title = \Drupal::config('loft_deploy.settings')
+        ->get('loft_deploy_site_title');
+      \Drupal::moduleHandler()->alter('loft_deploy_title_pre', $title);
       $title = str_replace('!site_role', $this->getSiteRole(), $title);
       $git_branch = strtolower($this->getGitBranch());
       if (!$git_branch) {
@@ -104,7 +104,7 @@ class LoftDeployManager {
         }
       }
       $title = trim($title, ' ~');
-      drupal_alter('loft_deploy_title_post', $title);
+      \Drupal::moduleHandler()->alter('loft_deploy_title_post', $title);
     }
 
     return $title;

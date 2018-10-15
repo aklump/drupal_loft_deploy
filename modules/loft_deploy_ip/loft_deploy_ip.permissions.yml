@@ -1,0 +1,4 @@
+'loft_deploy_ip:administer':
+  title: 'Administer Loft Deploy IP Access'
+  description: 'Perform administration tasks for Loft Deploy IP Access.'
+  'restrict access': false

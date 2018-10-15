@@ -13,11 +13,23 @@ define('LOFT_DEPLOY_IP_FILTER', 'exclude');
  * Implements hook_loft_deploy_border_access().
  */
 function loft_deploy_ip_loft_deploy_border_access_alter(&$access, $site_role, $cookie) {
-  $access = variable_get('loft_deploy_ip_filter', LOFT_DEPLOY_IP_FILTER) === 'include' ? FALSE : TRUE;
-  if (($ips = variable_get('loft_deploy_ip_ips', array()))) {
+  // @FIXME
+// Could not extract the default value because it is either indeterminate, or
+// not scalar. You'll need to provide a default value in
+// config/install/loft_deploy_ip.settings.yml and config/schema/loft_deploy_ip.schema.yml.
+$access = \Drupal::config('loft_deploy_ip.settings')->get('loft_deploy_ip_filter') === 'include' ? FALSE : TRUE;
+  // @FIXME
+// Could not extract the default value because it is either indeterminate, or
+// not scalar. You'll need to provide a default value in
+// config/install/loft_deploy_ip.settings.yml and config/schema/loft_deploy_ip.schema.yml.
+if (($ips = \Drupal::config('loft_deploy_ip.settings')->get('loft_deploy_ip_ips'))) {
     foreach ($ips as $ip) {
-      if (ip_address() == trim($ip)) {
-        $access = variable_get('loft_deploy_ip_filter', LOFT_DEPLOY_IP_FILTER) === 'include' ? TRUE : FALSE;
+      if (\Drupal::request()->getClientIp() == trim($ip)) {
+        // @FIXME
+// Could not extract the default value because it is either indeterminate, or
+// not scalar. You'll need to provide a default value in
+// config/install/loft_deploy_ip.settings.yml and config/schema/loft_deploy_ip.schema.yml.
+$access = \Drupal::config('loft_deploy_ip.settings')->get('loft_deploy_ip_filter') === 'include' ? TRUE : FALSE;
         break;
       }
     }

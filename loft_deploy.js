@@ -2,8 +2,7 @@
  * @file
  * The main javascript file for the loft_deploy module
  *
- * @ingroup loft_deploy
- * @{
+ * // TODO Convert to ES6.
  */
 (function ($) {
   Drupal.loftDeploy = Drupal.loftDeploy || {};

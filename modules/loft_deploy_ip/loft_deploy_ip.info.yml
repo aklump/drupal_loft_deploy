@@ -1,0 +1,7 @@
+name: 'Loft Deploy IP Access Control'
+description: 'Hide/Show the borders by IP'
+package: Other
+core: 8.x
+dependencies:
+  - loft_deploy
+type: module

@@ -1,0 +1,16 @@
+loft_deploy.settings:
+  type: mapping
+  label: Settings
+  mapping:
+    loft_deploy_border:
+      type: boolean
+    loft_deploy_border_color:
+      type: 'NULL'
+    loft_deploy_title_color:
+      type: 'NULL'
+    loft_deploy_site_title:
+      type: string
+    loft_deploy_css_class:
+      type: array
+    loft_deploy_meta_timeout:
+      type: integer

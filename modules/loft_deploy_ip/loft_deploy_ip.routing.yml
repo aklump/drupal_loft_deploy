@@ -1,0 +1,7 @@
+loft_deploy_ip.admin_settings:
+  path: /admin/config/development/loft-deploy
+  defaults:
+    _title: 'Loft Deploy Access'
+    _form: \Drupal\loft_deploy_ip\Form\LoftDeployIpAdminSettings
+  requirements:
+    _permission: 'loft_deploy_ip:administer'

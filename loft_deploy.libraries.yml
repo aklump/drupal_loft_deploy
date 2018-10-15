@@ -1,0 +1,11 @@
+visualizer:
+  css:
+    theme:
+      loft_deploy.css: {}
+  js:
+    loft_deploy.js: {}
+  dependencies:
+  - core/drupalSettings
+  - core/jquery
+  - core/jquery.once
+  - core/jquery.cookie

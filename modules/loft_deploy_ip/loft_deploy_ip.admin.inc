@@ -20,23 +20,31 @@
  * @ingroup forms
  */
 function loft_deploy_ip_admin_settings($form, &$form_state) {
-  $form['loft_deploy_ip_filter'] = array(
+  // @FIXME
+// Could not extract the default value because it is either indeterminate, or
+// not scalar. You'll need to provide a default value in
+// config/install/loft_deploy_ip.settings.yml and config/schema/loft_deploy_ip.schema.yml.
+$form['loft_deploy_ip_filter'] = array(
     '#type' => 'radios',
     '#title' => t('Border visibility mode'),
-    '#default_value' => variable_get('loft_deploy_ip_filter', LOFT_DEPLOY_IP_FILTER),
+    '#default_value' => \Drupal::config('loft_deploy_ip.settings')->get('loft_deploy_ip_filter'),
     '#options' => array(
       'include' => t('Show border if IP appears in the list. Hide from everyone else.'),
       'exclude' => t('Hide border if IP appears in the list. Show to everyone else.'),
     ),
   );
 
-  $form['loft_deploy_ip_ips'] = array(
+  // @FIXME
+// Could not extract the default value because it is either indeterminate, or
+// not scalar. You'll need to provide a default value in
+// config/install/loft_deploy_ip.settings.yml and config/schema/loft_deploy_ip.schema.yml.
+$form['loft_deploy_ip_ips'] = array(
     '#type' => 'textarea',
     '#title' => t('IP List'),
     '#description' => t('The border display will only affect these ips in the manner specified above.  Enter one or more IPs, each on a separate line. Your current ip is: %ip', array(
       '%ip' => $_SERVER['REMOTE_ADDR'],
     )),
-    '#default_value' => implode("\n", variable_get('loft_deploy_ip_ips', array())),
+    '#default_value' => implode("\n", \Drupal::config('loft_deploy_ip.settings')->get('loft_deploy_ip_ips')),
     '#rows' => 5,
     '#resizable' => TRUE,
   );
