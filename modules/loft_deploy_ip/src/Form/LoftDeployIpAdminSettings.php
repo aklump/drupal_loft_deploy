@@ -1,16 +1,14 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\loft_deploy_ip\Form\LoftDeployIpAdminSettings.
- */
-
 namespace Drupal\loft_deploy_ip\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
 
+/**
+ * Provide an admin form for the loft_deploy_ip module.
+ */
 class LoftDeployIpAdminSettings extends ConfigFormBase {
 
   /**
@@ -45,32 +43,27 @@ class LoftDeployIpAdminSettings extends ConfigFormBase {
     return ['loft_deploy_ip.settings'];
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function buildForm(array $form, \Drupal\Core\Form\FormStateInterface $form_state) {
-    // @FIXME
-// Could not extract the default value because it is either indeterminate, or
-// not scalar. You'll need to provide a default value in
-// config/install/loft_deploy_ip.settings.yml and config/schema/loft_deploy_ip.schema.yml.
-    $form['loft_deploy_ip_filter'] = [
+    $config = \Drupal::config('loft_deploy_ip.settings');
+    $form['filter_mode'] = [
       '#type' => 'radios',
       '#title' => t('Border visibility mode'),
-      '#default_value' => \Drupal::config('loft_deploy_ip.settings')->get('loft_deploy_ip_filter'),
+      '#default_value' => $config->get('filter_mode'),
       '#options' => [
         'include' => t('Show border if IP appears in the list. Hide from everyone else.'),
         'exclude' => t('Hide border if IP appears in the list. Show to everyone else.'),
       ],
     ];
-
-    // @FIXME
-    // Could not extract the default value because it is either indeterminate, or
-    // not scalar. You'll need to provide a default value in
-    // config/install/loft_deploy_ip.settings.yml and config/schema/loft_deploy_ip.schema.yml.
-    $form['loft_deploy_ip_ips'] = [
+    $form['ip_list'] = [
       '#type' => 'textarea',
       '#title' => t('IP List'),
       '#description' => t('The border display will only affect these ips in the manner specified above.  Enter one or more IPs, each on a separate line. Your current ip is: %ip', [
-        '%ip' => $_SERVER['REMOTE_ADDR']
-        ]),
-      '#default_value' => implode("\n", \Drupal::config('loft_deploy_ip.settings')->get('loft_deploy_ip_ips')),
+        '%ip' => \Drupal::request()->getClientIp(),
+      ]),
+      '#default_value' => implode("\n", $config->get('ip_list')),
       '#rows' => 5,
       '#resizable' => TRUE,
     ];
@@ -78,9 +71,11 @@ class LoftDeployIpAdminSettings extends ConfigFormBase {
     return parent::buildForm($form, $form_state);
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function validateForm(array &$form, \Drupal\Core\Form\FormStateInterface $form_state) {
-    $form_state->setValue(['loft_deploy_ip_ips'], array_filter(explode("\n", trim($form_state->getValue(['loft_deploy_ip_ips'])))));
+    $form_state->setValue(['ip_list'], array_filter(explode("\n", trim($form_state->getValue(['ip_list'])))));
   }
 
 }
-?>

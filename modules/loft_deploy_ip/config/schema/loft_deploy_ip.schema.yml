@@ -1,0 +1,8 @@
+loft_deploy_ip.settings:
+  type: mapping
+  label: Settings
+  mapping:
+    filter_mode:
+      type: string
+    ip_list:
+      type: array

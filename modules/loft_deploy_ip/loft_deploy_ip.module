@@ -13,23 +13,13 @@ define('LOFT_DEPLOY_IP_FILTER', 'exclude');
  * Implements hook_loft_deploy_border_access().
  */
 function loft_deploy_ip_loft_deploy_border_access_alter(&$access, $site_role, $cookie) {
-  // @FIXME
-// Could not extract the default value because it is either indeterminate, or
-// not scalar. You'll need to provide a default value in
-// config/install/loft_deploy_ip.settings.yml and config/schema/loft_deploy_ip.schema.yml.
-$access = \Drupal::config('loft_deploy_ip.settings')->get('loft_deploy_ip_filter') === 'include' ? FALSE : TRUE;
-  // @FIXME
-// Could not extract the default value because it is either indeterminate, or
-// not scalar. You'll need to provide a default value in
-// config/install/loft_deploy_ip.settings.yml and config/schema/loft_deploy_ip.schema.yml.
-if (($ips = \Drupal::config('loft_deploy_ip.settings')->get('loft_deploy_ip_ips'))) {
+  $config = \Drupal::config('loft_deploy_ip.settings');
+  $filter_mode = $config->get('filter_mode');
+  $access = $filter_mode === 'include' ? FALSE : TRUE;
+  if (($ips = $config->get('ip_list'))) {
     foreach ($ips as $ip) {
       if (\Drupal::request()->getClientIp() == trim($ip)) {
-        // @FIXME
-// Could not extract the default value because it is either indeterminate, or
-// not scalar. You'll need to provide a default value in
-// config/install/loft_deploy_ip.settings.yml and config/schema/loft_deploy_ip.schema.yml.
-$access = \Drupal::config('loft_deploy_ip.settings')->get('loft_deploy_ip_filter') === 'include' ? TRUE : FALSE;
+        $access = $filter_mode === 'include' ? TRUE : FALSE;
         break;
       }
     }
@@ -41,16 +31,16 @@ $access = \Drupal::config('loft_deploy_ip.settings')->get('loft_deploy_ip_filter
  * Implements hook_menu().
  */
 function loft_deploy_ip_menu() {
-  $items = array();
-  $items['admin/config/development/loft-deploy'] = array(
+  $items = [];
+  $items['admin/config/development/loft-deploy'] = [
     'title' => 'Loft Deploy Access',
     'description' => 'Hide or show the border based on IP address(es).',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('loft_deploy_ip_admin_settings'),
-    'access arguments' => array('loft_deploy_ip:administer'),
+    'page arguments' => ['loft_deploy_ip_admin_settings'],
+    'access arguments' => ['loft_deploy_ip:administer'],
     'type' => MENU_NORMAL_ITEM,
     'file' => 'loft_deploy_ip.admin.inc',
-  );
+  ];
 
   return $items;
 }
@@ -59,11 +49,11 @@ function loft_deploy_ip_menu() {
  * Implements hook_permission().
  */
 function loft_deploy_ip_permission() {
-  return array(
-    'loft_deploy_ip:administer' => array(
+  return [
+    'loft_deploy_ip:administer' => [
       'title' => t('Administer Loft Deploy IP Access'),
       'description' => t('Perform administration tasks for Loft Deploy IP Access.'),
       'restrict access' => FALSE,
-    ),
-  );
+    ],
+  ];
 }
