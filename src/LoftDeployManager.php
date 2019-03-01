@@ -83,7 +83,7 @@ class LoftDeployManager {
         $git_branch = t('n/a');
       }
       $title = str_replace('!git_branch', $git_branch, $title);
-      $title = str_ireplace('branch: n/a', '', $title);
+      $title = str_ireplace('~ branch: n/a', '', $title);
 
       // Gitflow support.
       if (strstr($title, '!gitflow')) {
