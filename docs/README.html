@@ -9,21 +9,19 @@
 
 <body class="page--readme">
 <header>
-  <div class="pager">
-  <a href="index.html" class="prev index">&laquo;Index</a>
-  <a href="index.html" class="index">Index</a>
-  <a href="_tasklist.html" class="next _tasklist"> Tasklist&raquo;</a>
-</div>
-</header>
-
-  <div class="search__wrapper">
+  <div class="pager"><a href="index.html" class="prev index">&laquo;Index</a><a href="index.html" class="index pager__book-title"></a><a href="index.html" class="next index">Index&raquo;</a></div></header>
+<section class="sub-header">
+  <div class="breadcrumbs"><a href="index.html">Index</a>
+         &raquo
+      </div>      <div class="search__wrapper">
   <form action="search--results.html">
     <input type="text" class="search-input" name="q" id="tipue_search_input" autocomplete="off" required>
   </form>
 </div>
+  </section>
 
-  <h1>Loft Deploy</h1>
-  <div class="breadcrumb"><a href="index.html">Index</a></div>
+
+<h1>Loft Deploy</h1>
 
 <section>
 
@@ -161,14 +159,9 @@ $config['loft_deploy.settings']['meta_timeout'] = 1200;
 </div>
 
 <footer>
-  <div class="pager">
-  <a href="index.html" class="prev index">&laquo;Index</a>
-  <a href="index.html" class="index">Index</a>
-  <a href="_tasklist.html" class="next _tasklist"> Tasklist&raquo;</a>
-</div>
-  
+  <div class="pager"><a href="index.html" class="prev index">&laquo;Index</a><a href="index.html" class="index pager__book-title"></a><a href="index.html" class="next index">Index&raquo;</a></div>  
   <div id="footer-legaleeze">
-    <p class="legaleeze center">Version: 8.x-1.7-rc3 &bull; Last Updated: Tue, 26 Feb 2019 12:57:02 -0800</p>
+    <p class="legaleeze center">Version: 8.x-1.7-rc4 &bull; Last Updated: Fri, 01 Mar 2019 13:54:32 -0800</p>
   </div>
 </footer>
 
@@ -177,9 +170,9 @@ $config['loft_deploy.settings']['meta_timeout'] = 1200;
   <script src="search/tipuesearch_set.js"></script>
   <script src="search/tipuesearch.min.js"></script>
   <script>
-    $(document).ready(function () {
-      $('#tipue_search_input').tipuesearch();
-    });
+    $(document).ready(function() {
+      $('#tipue_search_input').tipuesearch()
+    })
   </script>
 <script src="js/core.js"></script>
 </body>
