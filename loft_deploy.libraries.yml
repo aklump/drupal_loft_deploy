@@ -5,6 +5,7 @@ visualizer:
   js:
     loft_deploy.js: {}
   dependencies:
+  - core/drupal
   - core/drupalSettings
   - core/jquery
   - core/jquery.once
