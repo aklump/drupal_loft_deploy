@@ -73,6 +73,12 @@ Configuration
    This module has no measurable affect on a production website as it's
    been highly optimized for speed, so that idea should not deter you.
 
+  Can I Hide the Border Programmatically?
+
+     * You can ping /loft-deploy/hide and the border will be hidden for
+       the same time as double clicking it. This is useful for automated
+       testing, if the border gets in the way.
+
   Site Role / Border Color
 
      * Each instance of your website is one of: production, staging or
