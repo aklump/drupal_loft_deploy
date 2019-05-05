@@ -13,7 +13,7 @@
     }
     var $toggle = $('.loft-deploy .js-loft-deploy__hide');
 
-    // Single click hides until next page load
+    // Single click hides until next page load.
     $toggle.once().click(function (e) {
 
       // Was the meta key held down? Set cookie?
@@ -24,7 +24,7 @@
           });
         });
 
-        // Cookie handling
+        // Cookie handling.
         var expiry = new Date(),
           time = expiry.getTime() + settings.loftDeploy.metaTimeout * 1000;
         expiry.setTime(time);
