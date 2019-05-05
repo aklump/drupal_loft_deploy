@@ -1,0 +1,6 @@
+loft_deploy.content:
+  path: '/loft-deploy/hide'
+  defaults:
+    _controller: '\Drupal\loft_deploy\Controller\LoftDeployController::hide'
+  requirements:
+    _access: 'TRUE'

@@ -39,6 +39,7 @@ Let's say you are using this on a staging site and several people are looking at
 For the scenario mentioned, here's how I would configure it, where `XX.XX.XXX.XX` is my public IP address.  This way I will always see the staging border, but my clients don't have to be bothered by it.
 
 ![IP access](images/by-ip.png)
+
 ### Should I Enable on Production?
 
 Yes, usually.
@@ -46,6 +47,10 @@ Yes, usually.
 If you keep this enabled on production, then you will not have to do anything when you copy your database to your local or staging environments.  If you do not keep it enabled, then you will have to remember to manually enable this module every time you sync your database.  This is not realistic.  Alternatively, you may automate the enabling of this module when your database is synced, but my vote is to just keep it enabled everywhere, since this is the simplest and most reliable.
 
 This module has no measurable affect on a production website as it's been highly optimized for speed, so that idea should not deter you.
+
+### Can I Hide the Border Programmatically?
+
+* You can ping _/loft-deploy/hide_ and the border will be hidden for the same time as double clicking it.  This is useful for automated testing, if the border gets in the way.
 
 ### Site Role / Border Color
 
