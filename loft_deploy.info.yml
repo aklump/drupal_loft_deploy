@@ -2,7 +2,7 @@ name: 'Loft Deploy'
 description: 'Visually distinguish between Production, Staging and Development environments.'
 package: 'In the Loft Studios'
 core: 8.x
-version: 8.x-1.7-rc8
+version: 8.x-1.7-rc9
 homepage: 'https://github.com/aklump/drupal_loft_deploy'
 author: aklump
 type: module
