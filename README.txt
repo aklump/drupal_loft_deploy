@@ -1,5 +1,11 @@
                                   Loft Deploy
 
+Deprecated
+
+   This module is no longer maintained. You are encourage to take a look
+   at [1]Environment Indicator Loft which is the successor to Loft Deploy.
+     __________________________________________________________________
+
    loft_deploy
 
 Summary
@@ -10,12 +16,12 @@ Summary
    dev, where otherwise every site looks the same. I've found the colors
    prevent me from making mistakes.
 
-   Visit [1]https://github.com/aklump/drupal_loft_deploy for full
+   Visit [2]https://github.com/aklump/drupal_loft_deploy for full
    documentation.
 
 Contributing
 
-   If you find this project useful... please consider [2]making a
+   If you find this project useful... please consider [3]making a
    donation.
 
 Installation
@@ -152,5 +158,6 @@ $settings['loft_deploy.hide_border'] = false;
 
 References
 
-   1. https://github.com/aklump/drupal_loft_deploy
-   2. https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4E5KZHDQCEUV8&item_name=Gratitude%20for%20aklump%2Floft_deploy
+   1. https://github.com/aklump/drupal_environment_indicator_loft
+   2. https://github.com/aklump/drupal_loft_deploy
+   3. https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=4E5KZHDQCEUV8&item_name=Gratitude%20for%20aklump%2Floft_deploy

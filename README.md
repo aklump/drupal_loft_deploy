@@ -1,5 +1,11 @@
 # Loft Deploy
 
+## Deprecated
+
+This module is no longer maintained.  You are encourage to take a look at [Environment Indicator Loft](https://github.com/aklump/drupal_environment_indicator_loft) which is the successor to Loft Deploy.
+
+---
+
 ![loft_deploy](images/screenshot.png)
 
 ## Summary
