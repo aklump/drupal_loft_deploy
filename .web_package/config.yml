@@ -1,9 +1,7 @@
-master: "8.x-1.x 7.x-1.x 6.x-1.x 5.x-1.x"
-develop: "8.x-1.x 7.x-1.x 6.x-1.x 5.x-1.x"
+master: "7.x-1.x"
 remote: origin
 create_tags: patch
 push_tags: auto
 push_master: auto
-push_develop: auto
 micro_prefix: -rc
 version_file: loft_deploy.info

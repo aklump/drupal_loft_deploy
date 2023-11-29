@@ -3,7 +3,7 @@
 
 <h2>Summary</h2>
 
-<p>This module wraps non-production instances of your website in a colored border to indicate that you are elsewhere than production.  This helps me to keep track of where I am when switching from prod, staging and dev, where otherwise every site looks the same.  I've found the colors prevent me from making mistakes.</p>
+<p>This module wraps non-production instances of your website in a colored border to indicate that you are elsewhere than production. This helps me to keep track of where I am when switching from prod, staging and dev, where otherwise every site looks the same. I've found the colors prevent me from making mistakes.</p>
 
 <p><strong>Visit <a href="https://github.com/aklump/drupal_loft_deploy">https://github.com/aklump/drupal_loft_deploy</a> for full documentation.</strong></p>
 
@@ -34,13 +34,17 @@
 
 <p>Be aware that modules can alter this value using <code>loft_deploy_site_role_alter()</code>.</p>
 
+<h3>Can I hide the border for a single URL?</h3>
+
+<p>Yes. <code>loft_deploy_border_suppress(TRUE)</code></p>
+
 <h3>Can I restrict the border by IP?</h3>
 
 <p>Yes.</p>
 
-<p>Let's say you are using this on a staging site and several people are looking at it, not all of whom appreciate the colored border as much as you do.  Well, you can enable the included loft_deploy_ip submodule and you can hide or show based on an IP list at <em>/admin/config/development/loft-deploy</em>.</p>
+<p>Let's say you are using this on a staging site and several people are looking at it, not all of whom appreciate the colored border as much as you do. Well, you can enable the included loft_deploy_ip submodule and you can hide or show based on an IP list at <em>/admin/config/development/loft-deploy</em>.</p>
 
-<p>For the scenario mentioned, here's how I would configure it, where <code>XX.XX.XXX.XX</code> is my public IP address.  This way I will always see the staging border, but my clients don't have to be bothered by it.</p>
+<p>For the scenario mentioned, here's how I would configure it, where <code>XX.XX.XXX.XX</code> is my public IP address. This way I will always see the staging border, but my clients don't have to be bothered by it.</p>
 
 <p><img src="&path&images/by-ip.png" alt="IP access" /></p>
 
@@ -48,14 +52,14 @@
 
 <p>Yes, usually.</p>
 
-<p>If you keep this enabled on production, then you will not have to do anything when you copy your database to your local or staging environments.  If you do not keep it enabled, then you will have to remember to manually enable this module every time you sync your database.  This is not realistic.  Alternatively, you may automate the enabling of this module when your database is synced, but my vote is to just keep it enabled everywhere, since this is the simplest and most reliable.</p>
+<p>If you keep this enabled on production, then you will not have to do anything when you copy your database to your local or staging environments. If you do not keep it enabled, then you will have to remember to manually enable this module every time you sync your database. This is not realistic. Alternatively, you may automate the enabling of this module when your database is synced, but my vote is to just keep it enabled everywhere, since this is the simplest and most reliable.</p>
 
 <p>This module has no measurable affect on a production website as it's been highly optimized for speed, so that idea should not deter you.</p>
 
 <h3>Site Role / Border Color</h3>
 
 <ul>
-<li><p>Each instance of your website is one of: production, staging or dev. The color of the border around the non-production sites informs you as to it's role.  There's one more distinction between a site role dev with master branch, and a site role dev with a develop branch; this adds a fourth color.</p></li>
+<li><p>Each instance of your website is one of: production, staging or dev. The color of the border around the non-production sites informs you as to it's role. There's one more distinction between a site role dev with master branch, and a site role dev with a develop branch; this adds a fourth color.</p></li>
 <li><p>Obviously, production instances will not have a border.</p></li>
 <li><p>You will need to flush Drupal caches each time you change your site role in <em>settings.php</em>.</p></li>
 </ul>
@@ -77,13 +81,13 @@ dev         feature     yellow
 
 <p>Click this title to hide the visual border until next request.</p>
 
-<p>Click while holding down CMD or CTRL to hide it for 10 minutes.  The duration of this can be controlled using <em>settings.php</em>, e.g.:</p>
+<p>Click while holding down CMD or CTRL to hide it for 10 minutes. The duration of this can be controlled using <em>settings.php</em>, e.g.:</p>
 
 <pre><code>// Define the number of seconds to disable the border when clicking the metakey.
 $conf['loft_deploy_meta_timeout'] = 600
 </code></pre>
 
-<p>You may alter the title that is displayed at the bottom of the screen by adding the following to <em>settings.local.php</em> or <em>settings.php</em>, where the token <code>!site_role</code> will print the site role.  Other tokens are: <code>!git</code> and <code>!gitflow</code>.</p>
+<p>You may alter the title that is displayed at the bottom of the screen by adding the following to <em>settings.local.php</em> or <em>settings.php</em>, where the token <code>!site_role</code> will print the site role. Other tokens are: <code>!git</code> and <code>!gitflow</code>.</p>
 
 <pre><code>$conf['loft_deploy_site_title'] = '!site_role - !git &gt; !gitflow'
 </code></pre>
@@ -115,7 +119,7 @@ $conf['loft_deploy_meta_timeout'] = 600
 
 <h2>Always Hide the Border</h2>
 
-<p>Add the following to <code>settings.local.php</code> and the border will not show, ever, for any reason.  Why would you do this? Not sure.</p>
+<p>Add the following to <code>settings.local.php</code> and the border will not show, ever, for any reason. Why would you do this? Not sure.</p>
 
 <pre><code>$conf['loft_deploy_border'] = FALSE;
 </code></pre>
