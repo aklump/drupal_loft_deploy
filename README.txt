@@ -41,6 +41,10 @@ Configuration
    Be aware that modules can alter this value using
    loft_deploy_site_role_alter().
 
+  Can I hide the border for a single URL?
+
+   Yes. loft_deploy_border_suppress(TRUE)
+
   Can I restrict the border by IP?
 
    Yes.

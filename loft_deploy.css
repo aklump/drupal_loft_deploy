@@ -11,38 +11,45 @@
   padding: 3px 10px 3px;
   border-top-left-radius: 15px;
   -webkit-border-top-left-radius: 15px;
-  -moz-border-radius-topleft: 15px; }
-  .loft-deploy__title:hover {
-    text-decoration: none; }
+  -moz-border-radius-topleft: 15px;
+}
+.loft-deploy__title:hover {
+  text-decoration: none;
+}
 
-.loft-deploy__border--n, .loft-deploy__border--e, .loft-deploy__border--s, .loft-deploy__border--w {
+.loft-deploy__border--w, .loft-deploy__border--s, .loft-deploy__border--e, .loft-deploy__border--n {
   position: fixed;
   filter: blur(6px);
-  pointer-events: none; }
+  pointer-events: none;
+}
 
 .loft-deploy__border--n {
   height: 12px;
   left: 0;
   right: 0;
-  top: -6px; }
+  top: -6px;
+}
 
 .loft-deploy__border--e {
   bottom: 0;
   right: -6px;
   top: 0;
-  width: 12px; }
+  width: 12px;
+}
 
 .loft-deploy__border--s {
   bottom: -6px;
   height: 12px;
   left: 0;
-  right: 0; }
+  right: 0;
+}
 
 .loft-deploy__border--w {
   bottom: 0;
   left: -6px;
   top: 0;
-  width: 12px; }
+  width: 12px;
+}
 
 /**
  * Borders & Colors
@@ -52,59 +59,71 @@
   position: fixed;
   right: 0;
   top: 0;
-  z-index: 998; }
-  .loft-deploy .loft-deploy__border--n,
-  .loft-deploy .loft-deploy__border--e,
-  .loft-deploy .loft-deploy__border--s,
-  .loft-deploy .loft-deploy__border--w {
-    background-color: #fff; }
-  .loft-deploy .loft-deploy__title {
-    background-color: #fff;
-    color: #000; }
-  .loft-deploy.prod {
-    display: none; }
-  .loft-deploy.staging .loft-deploy__border--n,
-  .loft-deploy.staging .loft-deploy__border--e,
-  .loft-deploy.staging .loft-deploy__border--s,
-  .loft-deploy.staging .loft-deploy__border--w {
-    background-color: #0f0; }
-  .loft-deploy.staging .loft-deploy__title {
-    background-color: #0f0;
-    color: #000; }
-  .loft-deploy.staging.gitflow-feature .loft-deploy__border--n,
-  .loft-deploy.staging.gitflow-feature .loft-deploy__border--e,
-  .loft-deploy.staging.gitflow-feature .loft-deploy__border--s,
-  .loft-deploy.staging.gitflow-feature .loft-deploy__border--w {
-    background-color: #ff7f00; }
-  .loft-deploy.staging.gitflow-feature .loft-deploy__title {
-    background-color: #ff7f00;
-    color: #000; }
-  .loft-deploy.dev.gitflow-master .loft-deploy__border--n,
-  .loft-deploy.dev.gitflow-master .loft-deploy__border--e,
-  .loft-deploy.dev.gitflow-master .loft-deploy__border--s,
-  .loft-deploy.dev.gitflow-master .loft-deploy__border--w {
-    background-color: #f0f; }
-  .loft-deploy.dev.gitflow-master .loft-deploy__title {
-    background-color: #f0f;
-    color: #fff; }
-  .loft-deploy.dev .loft-deploy__border--n,
-  .loft-deploy.dev .loft-deploy__border--e,
-  .loft-deploy.dev .loft-deploy__border--s,
-  .loft-deploy.dev .loft-deploy__border--w, .loft-deploy.dev.gitflow-develop .loft-deploy__border--n,
-  .loft-deploy.dev.gitflow-develop .loft-deploy__border--e,
-  .loft-deploy.dev.gitflow-develop .loft-deploy__border--s,
-  .loft-deploy.dev.gitflow-develop .loft-deploy__border--w {
-    background-color: #0ff; }
-  .loft-deploy.dev .loft-deploy__title, .loft-deploy.dev.gitflow-develop .loft-deploy__title {
-    background-color: #0ff;
-    color: #000; }
-  .loft-deploy.dev.gitflow-feature .loft-deploy__border--n,
-  .loft-deploy.dev.gitflow-feature .loft-deploy__border--e,
-  .loft-deploy.dev.gitflow-feature .loft-deploy__border--s,
-  .loft-deploy.dev.gitflow-feature .loft-deploy__border--w {
-    background-color: #ffff0a; }
-  .loft-deploy.dev.gitflow-feature .loft-deploy__title {
-    background-color: #ffff0a;
-    color: #000; }
-
-/*# sourceMappingURL=loft_deploy.css.map */
+  z-index: 998;
+}
+.loft-deploy .loft-deploy__border--n,
+.loft-deploy .loft-deploy__border--e,
+.loft-deploy .loft-deploy__border--s,
+.loft-deploy .loft-deploy__border--w {
+  background-color: #fff;
+}
+.loft-deploy .loft-deploy__title {
+  background-color: #fff;
+  color: #000;
+}
+.loft-deploy.prod {
+  display: none;
+}
+.loft-deploy.staging .loft-deploy__border--n,
+.loft-deploy.staging .loft-deploy__border--e,
+.loft-deploy.staging .loft-deploy__border--s,
+.loft-deploy.staging .loft-deploy__border--w {
+  background-color: #0f0;
+}
+.loft-deploy.staging .loft-deploy__title {
+  background-color: #0f0;
+  color: #000;
+}
+.loft-deploy.staging.gitflow-feature .loft-deploy__border--n,
+.loft-deploy.staging.gitflow-feature .loft-deploy__border--e,
+.loft-deploy.staging.gitflow-feature .loft-deploy__border--s,
+.loft-deploy.staging.gitflow-feature .loft-deploy__border--w {
+  background-color: #ff7f00;
+}
+.loft-deploy.staging.gitflow-feature .loft-deploy__title {
+  background-color: #ff7f00;
+  color: #000;
+}
+.loft-deploy.dev.gitflow-master .loft-deploy__border--n,
+.loft-deploy.dev.gitflow-master .loft-deploy__border--e,
+.loft-deploy.dev.gitflow-master .loft-deploy__border--s,
+.loft-deploy.dev.gitflow-master .loft-deploy__border--w {
+  background-color: #f0f;
+}
+.loft-deploy.dev.gitflow-master .loft-deploy__title {
+  background-color: #f0f;
+  color: #fff;
+}
+.loft-deploy.dev .loft-deploy__border--n,
+.loft-deploy.dev .loft-deploy__border--e,
+.loft-deploy.dev .loft-deploy__border--s,
+.loft-deploy.dev .loft-deploy__border--w, .loft-deploy.dev.gitflow-develop .loft-deploy__border--n,
+.loft-deploy.dev.gitflow-develop .loft-deploy__border--e,
+.loft-deploy.dev.gitflow-develop .loft-deploy__border--s,
+.loft-deploy.dev.gitflow-develop .loft-deploy__border--w {
+  background-color: #0ff;
+}
+.loft-deploy.dev .loft-deploy__title, .loft-deploy.dev.gitflow-develop .loft-deploy__title {
+  background-color: #0ff;
+  color: #000;
+}
+.loft-deploy.dev.gitflow-feature .loft-deploy__border--n,
+.loft-deploy.dev.gitflow-feature .loft-deploy__border--e,
+.loft-deploy.dev.gitflow-feature .loft-deploy__border--s,
+.loft-deploy.dev.gitflow-feature .loft-deploy__border--w {
+  background-color: #ffff0a;
+}
+.loft-deploy.dev.gitflow-feature .loft-deploy__title {
+  background-color: #ffff0a;
+  color: #000;
+}

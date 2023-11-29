@@ -23,7 +23,7 @@ $dev_feature: #ffff0a;
 $text_on_dev_feature: #000;
 
 $border_width: 12px;
-$offset: $border_width / -2;
+$offset: calc($border_width / -2);
 
 .loft-deploy__title {
   position: fixed;
@@ -46,7 +46,7 @@ $offset: $border_width / -2;
 
 %border_base {
   position: fixed;
-  filter: blur($border_width / 2);
+  filter: blur(calc($border_width / 2));
   pointer-events: none;
 }
 
