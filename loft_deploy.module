@@ -48,6 +48,29 @@ define('LOFT_DEPLOY_WHICH_GIT', 'git');
 define('LOFT_DEPLOY_META_TIMEOUT', 600);
 
 /**
+ * Suppress display of the border for this request.
+ *
+ * This function should be called from within another module's page callback
+ * (preferably using module_invoke()) when the menu should not be displayed.
+ * This is useful for modules that implement popup pages or other special
+ * pages where the border would be distracting or break the layout.
+ *
+ * @param $set
+ *   Defaults to TRUE. If called before loft_deploy_preprocess_html(), the
+ *   border will not be displayed. If FALSE is passed, the suppression state is
+ *   returned.
+ */
+function loft_deploy_border_suppress($set = TRUE) {
+  static $suppress = FALSE;
+  if (!empty($set) && $suppress === FALSE) {
+    $suppress = TRUE;
+  }
+
+  return $suppress;
+}
+
+
+/**
  * Register module to be available in boot_invocations.
  */
 function loft_deploy_boot() {
@@ -129,7 +152,8 @@ function loft_deploy_border_access() {
  * Implements hook_preprocess_html().
  */
 function loft_deploy_preprocess_html(&$vars) {
-  if (loft_deploy_border_access()) {
+  if (!loft_deploy_border_suppress(FALSE)
+    && loft_deploy_border_access()) {
     $ldm = loft_deploy_manager();
     $site_role = loft_deploy_manager()->getSiteRole();
     $output = '';
