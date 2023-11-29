@@ -34,7 +34,7 @@ function loft_deploy_ip_admin_settings($form, &$form_state) {
     '#type' => 'textarea',
     '#title' => t('IP List'),
     '#description' => t('The border display will only affect these ips in the manner specified above.  Enter one or more IPs, each on a separate line. Your current ip is: %ip', array(
-      '%ip' => $_SERVER['REMOTE_ADDR'],
+      '%ip' => ip_address(),
     )),
     '#default_value' => implode("\n", variable_get('loft_deploy_ip_ips', array())),
     '#rows' => 5,
